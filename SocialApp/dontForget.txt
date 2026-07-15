@@ -1,0 +1,8 @@
+npm install express mongoose cors dotenv
+
+Explanation:
+
+express → creates the API server
+mongoose → connects Node.js to MongoDB
+cors → allows your React app to call the server
+dotenv → loads environment variables like MongoDB connection strings
