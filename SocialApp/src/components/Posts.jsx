@@ -14,16 +14,16 @@ export const Posts = () => {
     const location = useLocation();
     const loggedInPerson = userLoggedInCurrently;
     const user = location.state?.user || loggedInPerson;
-    console.log(user);
-    console.log(location);
+    // console.log(user);
+    // console.log(location);
     const fetchPosts = async () => {
         try {
             const resp = await fetch("http://localhost:5000/posts/getAllPosts");
             const data = await resp.json();
-            console.log(data.posts);
+            // console.log(data.posts);
             setPosts(data.posts);
         } catch (error) {
-            console.log("there was an error", error);
+            // console.log("there was an error", error);
         }
     };
     useEffect(() => {
@@ -33,7 +33,7 @@ export const Posts = () => {
     const postsByYou = posts?.filter(
         (post) => post.userId == userLoggedInCurrently._id,
     );
-    console.log(postsByYou, userLoggedInCurrently._id);
+    // console.log(postsByYou, userLoggedInCurrently._id);
     const handleDeletePost = async (id) => {
         try {
             const options = { method: "delete" };
@@ -42,10 +42,10 @@ export const Posts = () => {
                 options,
             );
             const data = await resp.json();
-            console.log(data);
+            // console.log(data);
             window.location.reload();
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 

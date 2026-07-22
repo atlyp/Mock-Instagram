@@ -24,7 +24,7 @@ function App() {
           const personAlreadyLoggedIn = JSON.parse(localStorage.getItem("loggedInIndividual"));
           // look in memory, to see if somebody  has already logged in!, have the question mark here because if noone has logged in yet, the property doesn't exist yet- question mark means ONLY when this property exists!
           if (personAlreadyLoggedIn) {
-               console.log("someone logged in");
+               // console.log("someone logged in");
                //if someone was already logegd in-
                return dispatch(logInOffMemory(personAlreadyLoggedIn));
                //   make sure they remain logged in

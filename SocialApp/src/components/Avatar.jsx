@@ -15,8 +15,8 @@ export const Avatar = ({ whatTheUserJustCliked }) => {
     // naviagte a 
     const handleLogOut = () => {
         dispatch(setLogOut());
-        console.log(loggedIn);
-        console.log(userLoggedInCurrently, "is logged in");
+        // console.log(loggedIn);
+        // console.log(userLoggedInCurrently, "is logged in");
         localStorage.removeItem("loggedInIndividual");
         navigate("/");
         setAvatarDropdownShow(false);
@@ -39,8 +39,8 @@ export const Avatar = ({ whatTheUserJustCliked }) => {
     //     }
     // }, [whatTheUserJustCliked]);
     const avatarDropdownRef = useRef();
-    console.dir(avatarDropdownRef.current);
-    console.log("this is what was clicked", whatTheUserJustCliked);
+    // console.dir(avatarDropdownRef.current);
+    // console.log("this is what was clicked", whatTheUserJustCliked);
     return (
         <>
             {userLoggedInCurrently.username !== undefined ? (

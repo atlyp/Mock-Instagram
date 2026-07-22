@@ -9,9 +9,7 @@ import {
 import { useNavigate } from "react-router";
 
 export const SignUp = () => {
-  const { ourUsers, loggedIn} = useSelector(
-    (state) => state.socialKey,
-  );
+  const { ourUsers, loggedIn } = useSelector((state) => state.socialKey);
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -24,54 +22,7 @@ export const SignUp = () => {
     const whatWasTyped = event.target.value;
     change(whatWasTyped);
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const personWhoJustSignedUp = {
-      username: username,
-      userImage: "",
-      email: email,
-      password: password,
-    };
-    const usersInMemory = await JSON.parse(localStorage.getItem("users"));
-    // look at our users in memory
-    const userNameTaken = usersInMemory?.find(
-      (existingUser) => username == existingUser.username,
-    );
-    // we'll^^ look through our existing users to find a username that matches- we store that in this variable-
-    if (userNameTaken) {
-      return alert("Username taken!");
-      // if username is taken- let them know
-    } else {
-      // if username isn't taken- make sure their emails and passwords match
-      if (password == confirmPassword) {
-        // if the passwords match
-        if (email == confirmEmail) {
-          // and if the emails match!
 
-          dispatch(setWhoSignedUp(personWhoJustSignedUp));
-          //   ^ save this user as somebody sigingup so we can keep them logged in
-          localStorage.setItem(
-            "users",
-            JSON.stringify([...ourUsers, personWhoJustSignedUp]),
-          );
-          //remember them & add them to our database
-          dispatch(setLoggedIn(!loggedIn));
-          //   set LOGGEDIN to somebody is logged in
-          const users = JSON.parse(localStorage.getItem("users"));
-          console.log(users);
-          localStorage.setItem(
-            "loggedInIndividual",
-            JSON.stringify({ whosLoggedIn: personWhoJustSignedUp }),
-          );
-        } else {
-          alert("Your emails do not match");
-        }
-      } else {
-        alert("Your passwords do not match");
-      }
-    }
-  };
-  
   const handleTestUserAdd = async (e) => {
     e.preventDefault();
     try {
@@ -83,19 +34,23 @@ export const SignUp = () => {
         body: JSON.stringify({
           email,
           password,
-          username, 
+          username,
         }),
       });
       console.log("we are inside our handle test user add");
       const data = await response.json();
       console.log("what came from end point", data);
-      
+
       if (!data.success) return alert(data.message);
       // ^ send our data to the DB and try to become a user- if we get an error then alert us
       else {
         // if no error- toggle signed in state and remember who was signed in
         dispatch(setWhoSignedUp(data.data));
-        localStorage.setItem("loggedInIndividual", JSON.stringify(data.newUser));console.log(data.newUser);
+        localStorage.setItem(
+          "loggedInIndividual",
+          JSON.stringify(data.newUser),
+        );
+        console.log(data);
         navigate("/dashboard", { state: { user: data.data } });
       }
       console.log(data);

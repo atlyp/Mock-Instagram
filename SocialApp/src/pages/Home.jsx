@@ -12,7 +12,7 @@ export const Home = () => {
         (state) => state.socialKey,
     );
     const [personLoggedIn, setPersonLoggedin] = useState(null);
-    console.log(loggedIn);
+    // console.log(loggedIn);
     useEffect(() => {
          const personLoggedIn = JSON.parse(
             localStorage.getItem("loggedInIndividual"),
