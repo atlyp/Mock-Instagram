@@ -23,7 +23,7 @@ export const SignUp = () => {
     change(whatWasTyped);
   };
 
-  const handleTestUserAdd = async (e) => {
+  const handleUserSIgnUp = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:5000/signUp", {
@@ -39,7 +39,7 @@ export const SignUp = () => {
       });
       console.log("we are inside our handle test user add");
       const data = await response.json();
-      console.log("what came from end point", data);
+      console.log("what came from end point", data.data);
 
       if (!data.success) return alert(data.message);
       // ^ send our data to the DB and try to become a user- if we get an error then alert us
@@ -48,7 +48,7 @@ export const SignUp = () => {
         dispatch(setWhoSignedUp(data.data));
         localStorage.setItem(
           "loggedInIndividual",
-          JSON.stringify(data.newUser),
+          JSON.stringify(data.data),
         );
         console.log(data);
         navigate("/dashboard", { state: { user: data.data } });
@@ -102,7 +102,7 @@ export const SignUp = () => {
               <form
                 method="POST"
                 onSubmit={(e) =>
-                  handleTestUserAdd(e, email, password, username)
+                  handleUserSIgnUp(e, email, password, username)
                 }
               >
                 <h5 className="text-xl font-semibold text-heading mb-6">
