@@ -1,0 +1,93 @@
+* {
+    transition: all 500ms ease-in-out;
+}
+@font-face {
+    font-family: bangers;
+    src: url("./assets/fonts/Bangers/Bangers-Regular.ttf");
+}
+@font-face {
+    font-family: inter-italic;
+    src: url("./assets//fonts/Inter/Inter-Italic-VariableFont_opsz\,wght.ttf");
+}
+.likeBox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.postsContainer {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    padding: 2rem;
+    justify-items: center;
+    gap: 4rem;
+}
+
+.containerForLikeButtons {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    margin: 1rem;
+}
+
+.navHidden {
+    top: -15rem;
+}
+.navbarEl {
+    transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 2px 2px 2px rgb(255, 171, 171);
+}
+
+.dModeBtn {
+    font-size: 1.9rem;
+}
+.wholeContainer {
+    min-height: 100vh;
+}
+.appNotNavContainer {
+    height: 100%;
+}
+.bottomNav {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+    width: 100%;
+}
+.datetimespan {
+    color: gray;
+    font-style: italic;
+}
+.userSearchInput::placeholder {
+    color: rgb(255, 110, 134);
+}
+.newPostModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.newPostForm {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.accountStats {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+.clickViewAccount {
+    transition: all 500ms ease;
+}
+.accountStatLabel {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    text-align: center;
+    width: 100%;
+}
+ .accountStatItself {
+        width: 100%;
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+    }

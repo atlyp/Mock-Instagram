@@ -1,0 +1,32 @@
+make followers- field for users in DB- -look into patch or put methods- "update"?
+followers should be an object- {
+    count: Number,
+    list: String
+}DONE
+
+following ^ should take the same ^ format
+make new post available to post- chekc out flowbite templates! 
+test endPoint and functionalityFirst
+DONE
+
+
+split middleware function in routers into more separate concise pieces
+
+
+
+while you are logged in- use the users ID and use router.post to post a "post" document/a post- to the POSt collection
+DONE
+
+
+
+look at a paid one and just build it off SIGHT!!
+
+
+
+create a chatroom schema- so users can send other messages-
+{
+    userId: theirrID,
+    body:"message blah blah",
+    viewed:false,
+    
+}

@@ -1,0 +1,26 @@
+# ===== Dependencies =====
+SocialApp/node_modules/
+server/node_modules/
+
+# ===== Environment variables / secrets =====
+SocialApp/.env
+SocialApp/.env.local
+server/.env
+server/.env.local
+
+# ===== Build output =====
+SocialApp/dist/
+SocialApp/build/
+server/dist/
+server/build/
+
+# ===== Logs =====
+*.log
+
+# ===== OS junk files =====
+.DS_Store
+Thumbs.db
+
+# ===== Editor/IDE files =====
+.vscode/
+.idea/

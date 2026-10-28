@@ -1,0 +1,54 @@
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { CardEl } from "../components/CardEl.jsx";
+import { handleViewUser } from "../components/StatusCard.jsx";
+
+export const ViewFollowing = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    console.log(location);
+    const [whoIFollow, setWhoIFollow] = useState([]);
+    const getWhoIFollow = async (whoIFollow) => {
+        whoIFollow = whoIFollow?.split(" ").join("-");
+        try {
+            const resp = await fetch(
+                `http://localhost:5000/getMyFollowersOrWhoFollowsMe/${whoIFollow}`,
+            );
+            const data = await resp.json();
+            console.log(data);
+            setWhoIFollow(data.result);
+        } catch (error) {
+            console.log("there was an error getting your followers");
+        }
+    };
+    const personViewed = location.state.user;
+    useEffect(() => {
+        getWhoIFollow(personViewed.following.list);
+    }, []);
+
+    return (
+        <div className=" dark:text-white p-3 ">
+            <h1 className="text-5xl dark:text-pink-500 italic font-extrabold m-2">
+                @{personViewed.username}{" "}
+            </h1>
+            <span className="text-4xl dark:text-pink-500 dark:border-white">
+                FOLLOWS:
+            </span>
+            <span className="w-[70%] rounded-4xl p-1 block border-black dark:border-white border-dotted border-[3px] ">
+                {whoIFollow?.map((user) => {
+                    return (
+                        <CardEl
+                            pointer={true}
+                            styles={"m-3 w-min shadow-3xl"}
+                            handleClick={() =>
+                                handleViewUser(user._id, navigate)
+                            }
+                            // we pass the Id because in this function that is what we use to navigate and fetch the user- we fetch by the ID or the user themselves
+                            title={user.username}
+                        ></CardEl>
+                    );
+                })}
+            </span>
+        </div>
+    );
+};
