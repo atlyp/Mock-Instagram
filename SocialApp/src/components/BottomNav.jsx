@@ -1,117 +1,144 @@
-import { useEffect, useRef, useState } from "react";
-import { FaPenToSquare } from "react-icons/fa6";
+import { useState } from "react";
+import {
+    FaHouse,
+    FaMagnifyingGlass,
+    FaPenToSquare,
+    FaPlus,
+    FaRss,
+    FaUser,
+} from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Button } from "./Button";
-const inputTheme = { border: "1px solid pink", borderRadius: "7px", margin:"0.4rem" };
+
 export const BottomNav = () => {
-  const [makingNewPost, setMakingNewPost] = useState(false);
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const { loggedIn, userLoggedInCurrently } = useSelector(
-    (state) => state.socialKey,
-  );
-  // console.log(userLoggedInCurrently);
-  const navigate = useNavigate();
-  const formRef = useRef();
-  const newPostDivRef = useRef();
+    const [makingNewPost, setMakingNewPost] = useState(false);
+    const [title, setTitle] = useState("");
+    const [body, setBody] = useState("");
+    const { userLoggedInCurrently } = useSelector((state) => state.socialKey);
+    const navigate = useNavigate();
 
-  const handlePostCreate = async (id, dataWeAreSending, e) => {
-    e.preventDefault();
-    const options = {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dataWeAreSending),
+    const handlePostCreate = async (id, dataWeAreSending, e) => {
+        e.preventDefault();
+        const options = {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dataWeAreSending),
+        };
+        try {
+            const response = await fetch(
+                `http://localhost:5000/posts/createAPost/${id}`,
+                options,
+            );
+            if (!response.ok) {
+                throw new Error("The post could not be created.");
+            }
+            navigate("/Dashboard", { state: { user: userLoggedInCurrently } });
+            window.location.reload();
+        } catch (error) {
+            console.error("There was an error creating your post", error);
+        }
     };
-    try {
-      const response = await fetch(
-        `http://localhost:5000/posts/createAPost/${id}`,
-        options,
-      );
-      const data = await response.json();
-      // console.log(data);
-      navigate("/Dashboard", { state: { user: userLoggedInCurrently } });
-      window.location.reload();
-    } catch (error) {
-      console.error("There was an error", error);
-    }
-  };
 
-  const handleModalShow = (e) => {
-    console.log(e.target);
-    console.log(newPostDivRef);
-    if (e.target == newPostDivRef.current) {
-      setMakingNewPost(!makingNewPost);
-    }
-  };
-  return (
-    <>
-      <div
-        className="
-            bg-gray-300 dark:bg-gray-700 bottomNav bottom-0 z-1 "
-      >
-        <FaPenToSquare
-          className=" m-1
-                    dark:bg-pink-500 dark:text-black
-                    bg-white text-pink-500
-                     text-5xl rounded p-[2.5px]"
-          onClick={() => setMakingNewPost(!makingNewPost)}
-        />
-      </div>
+    const goTo = (path) =>
+        navigate(path, { state: { user: userLoggedInCurrently } });
 
-      {makingNewPost ? (
+    return (
         <>
-          <div className=" flex-col w-[50%] fixed z-2 top-[40%] left-[20%] h-fit">
-            <form
-              ref={formRef}
-              onSubmit={(e) =>
-                handlePostCreate(
-                  userLoggedInCurrently._id,
-                  {
-                    title,
-                    body,
-                    author: userLoggedInCurrently.username,
-                    likes: { count: 0, list: "" },
-                  },
-                  e,
-                )
-              }
-              method="post"
-              className="newPostForm opacity-100 rounded-2xl p-2 "
+            <nav className="mobileBottomNav" aria-label="Main navigation">
+                <button type="button" aria-label="Home" onClick={() => goTo("/Dashboard")}>
+                    <FaHouse aria-hidden="true" />
+                </button>
+                <button type="button" aria-label="Your feed" onClick={() => goTo("/Feed")}>
+                    <FaRss aria-hidden="true" />
+                </button>
+                <button
+                    type="button"
+                    className="createPostNavButton"
+                    aria-label="Create a post"
+                    onClick={() => setMakingNewPost(true)}
+                >
+                    <FaPlus aria-hidden="true" />
+                </button>
+                <button type="button" aria-label="Search users" onClick={() => goTo("/Search")}>
+                    <FaMagnifyingGlass aria-hidden="true" />
+                </button>
+                <button type="button" aria-label="Your profile" onClick={() => goTo("/About")}>
+                    <FaUser aria-hidden="true" />
+                </button>
+            </nav>
+            <button
+                type="button"
+                className="desktopCreateButton"
+                aria-label="Create a post"
+                onClick={() => setMakingNewPost(true)}
             >
-              <span className="labelInputSpan flex flex-col w-[50%]">
-                <label className="text-center" htmlFor="title">Title??</label>
-                <input
-                style={inputTheme}
-                  placeholder="My posts title"
-                  type="text"
-                  id="title"
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </span>
-              <span className="labelInputSpan flex flex-col w-[50%]">
-                <label className="text-center" htmlFor="body">Have Something To Say?🗣️</label>
-                <textarea
-                style={inputTheme}
-                  type="text"
-                  placeholder="Type Away . . ."
-                  id="body"
-                  onChange={(e) => setBody(e.target.value)}
-                />
-              </span>
-              {/* <button type="submit">Post</button> */}
-              <Button styles={"text-xl"} btnType={"submit"} btnText={"Post"} />
-            </form>
-          </div>
-          <div
-            ref={newPostDivRef}
-            onClick={(e) => handleModalShow(e)}
-            className={`bg-black w-full h-[100vh] newPostModal fixed opacity-10 top-0 ${makingNewPost ? "flex" : "hidden"}`}
-          ></div>{" "}
+                <FaPenToSquare aria-hidden="true" />
+            </button>
+
+            {makingNewPost ? (
+                <>
+                    <button
+                        type="button"
+                        className="newPostOverlay"
+                        aria-label="Close create post form"
+                        onClick={() => setMakingNewPost(false)}
+                    />
+                    <section
+                        className="newPostDialog"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="create-post-title"
+                    >
+                        <h2 id="create-post-title" className="text-xl font-semibold">
+                            Create a post
+                        </h2>
+                        <form
+                            onSubmit={(e) =>
+                                handlePostCreate(
+                                    userLoggedInCurrently._id,
+                                    {
+                                        title,
+                                        body,
+                                        author: userLoggedInCurrently.username,
+                                        likes: { count: 0, list: "" },
+                                    },
+                                    e,
+                                )
+                            }
+                            method="post"
+                            className="newPostForm opacity-100 rounded-2xl p-2 "
+                        >
+                            <span className="labelInputSpan flex flex-col">
+                                <label htmlFor="title">Add a title</label>
+                                <input
+                                    placeholder="What’s this post about?"
+                                    type="text"
+                                    id="title"
+                                    required
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                            </span>
+                            <span className="labelInputSpan flex flex-col">
+                                <label htmlFor="body">Your caption</label>
+                                <textarea
+                                    placeholder="Share a little more..."
+                                    id="body"
+                                    required
+                                    onChange={(e) => setBody(e.target.value)}
+                                />
+                            </span>
+                            <Button
+                                styles="w-full justify-center text-base"
+                                btnType="submit"
+                                btnText="Share post"
+                            />
+                        </form>
+                    </section>
+                </>
+            ) : (
+                ""
+            )}
         </>
-      ) : (
-        ""
-      )}
-    </>
-  );
+    );
 };
