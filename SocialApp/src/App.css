@@ -309,9 +309,32 @@
     box-shadow: 0 12px 32px rgb(25 20 22 / 6%);
 }
 
+.authCreatorCredit {
+    margin: 1.1rem 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px solid #f0ebed;
+    color: #898087;
+    font-size: 0.78rem;
+    text-align: center;
+}
+
+.authCreatorCredit strong {
+    color: #a12660;
+    font-weight: 650;
+}
+
 .dark .authCard {
     border-color: #30282c;
     background: #171315;
+}
+
+.dark .authCreatorCredit {
+    border-color: #30282c;
+    color: #aa9da4;
+}
+
+.dark .authCreatorCredit strong {
+    color: #ffb6d2;
 }
 
 .authCard h2 {
@@ -818,6 +841,10 @@
 }
 
  @media (min-width: 640px) {
+     .authCreatorCredit {
+         display: none;
+     }
+
      .postsContainer {
          width: min(100% - 2rem, 42rem);
          gap: 1.25rem;

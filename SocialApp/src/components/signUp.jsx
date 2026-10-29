@@ -87,7 +87,7 @@ export const SignUp = () => {
               href="#"
               className="text-fg-brand hover:underline font-medium text-lg inline-flex items-center"
             >
-              Jun Atly Plimouth is the creator of your new favorite corner of the internet
+              Juno Atly Plimouth is the creator of your new favorite corner of the internet
               <svg
                 className="w-6 h-6 rtl:rotate-180 ms-1.5"
                 aria-hidden="true"
@@ -241,6 +241,9 @@ export const SignUp = () => {
                   </button>
                 </div>
               </form>
+              <p className="authCreatorCredit">
+                JunoSocial was created by <strong>Juno Atly Pl-i-mouth</strong>
+              </p>
             </div>
           </div>
         </div>

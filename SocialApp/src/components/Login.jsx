@@ -201,6 +201,9 @@ export const Login = () => {
                                     </button>
                                 </div>
                             </form>
+                            <p className="authCreatorCredit">
+                                JunoSocial was created by <strong>Juno Atly Pl-i-mouth</strong>
+                            </p>
                         </div>
                     </div>
                 </div>
