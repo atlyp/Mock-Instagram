@@ -241,6 +241,25 @@ router.post("/signUp", async (req, res) => {
 
   try {
     // This starts work that can fail, such as a database or bcrypt operation.
+    const existingUser = await User.findOne({
+      // Check the database before creating an account so existing names/emails get a clear response.
+      $or: [{ username: username.trim() }, { email: email.trim() }],
+      // Treat either an already-used username or an already-used email as a conflict.
+    });
+    // Finish checking whether this account is already registered.
+    if (existingUser) {
+      // Stop before hashing or saving when the username or email is taken.
+      return res.status(409).json({
+        // Return a conflict status so the frontend knows signup was not completed.
+        success: false,
+        // Mark this response as unsuccessful.
+        message: "That username or email is already in use.",
+        // Explain why this account could not be created.
+      });
+      // Finish the response for an account that already exists.
+    }
+    // Continue to create the account only when the username and email are available.
+
     // ^ bcrypt turns the password into a one-way hash before it goes in the database
     const hashedPassword = await bcrypt.hash(password, passwordSaltRounds);
     // Hash the submitted password before it is saved; the original is not stored.
@@ -287,6 +306,18 @@ router.post("/signUp", async (req, res) => {
     // This handles failures from the database or password work above.
     console.error("There was an error signing up", error);
     // Log the failure on the server so it can be diagnosed.
+    if (error.code === 11000) {
+      // Handle a duplicate-key race if two signups use the same value at once.
+      return res.status(409).json({
+        // Return a conflict status for the duplicate account.
+        success: false,
+        // Mark this response as unsuccessful.
+        message: "That username or email is already in use.",
+        // Give the same clear message as the earlier duplicate check.
+      });
+      // Finish the duplicate-key response.
+    }
+    // Report other database or hashing problems as server errors.
     res.status(500).json({
       // Tell the caller the server could not complete the request.
       success: false,

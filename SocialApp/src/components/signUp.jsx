@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setWhoSignedUp,
-  setLoggedIn,
   setLoggingInState,
-  loggingInState,
 } from "../redux/social";
 import { useNavigate } from "react-router";
 import { apiUrl } from "../config/api";
 
 export const SignUp = () => {
-  const { ourUsers, loggedIn } = useSelector((state) => state.socialKey);
+  const { loggingInState } = useSelector((state) => state.socialKey);
   const dispatch = useDispatch();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const setInfo = (event, change) => {
     const whatWasTyped = event.target.value;
@@ -26,6 +26,17 @@ export const SignUp = () => {
 
   const handleUserSIgnUp = async (e) => {
     e.preventDefault();
+    setStatusMessage("");
+    if (email.trim().toLowerCase() !== confirmEmail?.trim().toLowerCase()) {
+      setStatusMessage("Those email addresses don't match.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setStatusMessage("Those passwords don't match.");
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
       const response = await fetch(apiUrl("/signUp"), {
         method: "POST",
@@ -33,31 +44,31 @@ export const SignUp = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
+          email: email.trim(),
           password,
-          username,
+          username: username.trim(),
         }),
       });
-      console.log("we are inside our handle test user add");
       const data = await response.json();
-      console.log("what came from end point", data.data);
 
-      if (!data.success) return alert(data.message);
-      // ^ send our data to the DB and try to become a user- if we get an error then alert us
-      else {
-        // if no error- toggle signed in state and remember who was signed in
-        dispatch(setWhoSignedUp(data.data));
-        localStorage.setItem(
-          "loggedInIndividual",
-          JSON.stringify(data.data),
-        );
-        console.log(data);
-        navigate("/dashboard", { state: { user: data.data } });
+      if (!response.ok || !data.success || !data.data?._id) {
+        setStatusMessage(data.message || "We couldn't create your account.");
+        return;
       }
-      console.log(data);
-      return;
+
+      dispatch(setWhoSignedUp(data.data));
+      localStorage.setItem(
+        "loggedInIndividual",
+        JSON.stringify(data.data),
+      );
+      navigate("/dashboard", { state: { user: data.data } });
     } catch (error) {
-      console.log("front-end error", error);
+      console.error("There was an error creating your account", error);
+      setStatusMessage(
+        "We couldn't reach the server. Check your connection and try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -114,7 +125,7 @@ export const SignUp = () => {
                   </label>
                   <input
                     onChange={(e) => setInfo(e, setUsername)}
-                    type="username"
+                    type="text"
                     id="username"
                     className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                     placeholder="JohnDoe999"
@@ -146,7 +157,7 @@ export const SignUp = () => {
                   </label>
                   <input
                     onChange={(e) => setInfo(e, setConfirmEmail)}
-                    type="confirmEmail"
+                    type="email"
                     id="confirmEmail"
                     className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                     placeholder="example@company.com"
@@ -209,19 +220,25 @@ export const SignUp = () => {
                 </div>
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none w-full mb-3"
                 >
-                  Sign Up
+                  {isSubmitting ? "Creating account..." : "Sign Up"}
                 </button>
+                {statusMessage && (
+                  <p className="mb-3 text-sm text-red-600" role="alert">
+                    {statusMessage}
+                  </p>
+                )}
                 <div className="text-sm font-medium text-body">
                   Have an account with us?{" "}
-                  <a
+                  <button
+                    type="button"
                     onClick={() => dispatch(setLoggingInState(!loggingInState))}
-                    href="#"
                     className="text-fg-brand hover:underline"
                   >
                     Login!
-                  </a>
+                  </button>
                 </div>
               </form>
             </div>

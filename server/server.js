@@ -18,6 +18,8 @@ import cors from "cors";
 dotenv.config({ path: fileURLToPath(new URL("./.env", import.meta.url)) });
 
 const isProduction = process.env.NODE_ENV === "production";
+const isLocalDevelopmentOrigin = (origin) =>
+    !isProduction && /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
 const allowedOrigins = (
     process.env.FRONTEND_ORIGIN ??
     (isProduction
@@ -44,7 +46,11 @@ app.use(
 app.use(
     cors({
         origin(origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
+            if (
+                !origin ||
+                allowedOrigins.includes(origin) ||
+                isLocalDevelopmentOrigin(origin)
+            ) {
                 return callback(null, true);
             }
 

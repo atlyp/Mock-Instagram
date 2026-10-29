@@ -6,6 +6,8 @@ import { apiUrl } from "../config/api";
 export const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [statusMessage, setStatusMessage] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     let navigate = useNavigate();
     const { loggingInState } = useSelector((state) => state.socialKey);
     const dispatch = useDispatch();
@@ -17,30 +19,40 @@ export const Login = () => {
 
     const databaseLogin = async (e) => {
         e.preventDefault();
-        const resp = await fetch(apiUrl("/loggingIn"), {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username,
-                password,
-            }),
-        });
-        const data = await resp.json();
-        console.log(data.data, "the user");
-        if (data.data[0]) {
-            // if there is no error^
+        setIsSubmitting(true);
+        setStatusMessage("");
+
+        try {
+            const resp = await fetch(apiUrl("/loggingIn"), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: username.trim(),
+                    password,
+                }),
+            });
+            const data = await resp.json();
+
+            if (!resp.ok || !data.success || !data.data?.[0]) {
+                setStatusMessage(data.message || "We couldn't sign you in.");
+                return;
+            }
+
             localStorage.setItem(
                 "loggedInIndividual",
                 JSON.stringify(data.data[0]),
             );
             dispatch(signSomeoneIn(data.data[0]));
             navigate("/dashboard", { state: { user: data.data[0] } });
-            // navigate to dashboard and pass the user as state
-        } else {
-            return alert("No User Found");
-            // otherwise give us the error
+        } catch (error) {
+            console.error("There was an error signing in", error);
+            setStatusMessage(
+                "We couldn't reach the server. Check your connection and try again.",
+            );
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -137,22 +149,29 @@ export const Login = () => {
                                             Remember me
                                         </label>
                                     </div>
-                                    <a
-                                        href="#"
+                                    <button
+                                        type="button"
                                         className="ms-auto text-sm font-medium text-fg-brand hover:underline"
                                     >
                                         Lost Password?
-                                    </a>
+                                    </button>
                                 </div>
                                 <button
                                     type="submit"
+                                    disabled={isSubmitting}
                                     className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none w-full mb-3"
                                 >
-                                    Login to your account
+                                    {isSubmitting ? "Signing in..." : "Login to your account"}
                                 </button>
+                                {statusMessage && (
+                                    <p className="mb-3 text-sm text-red-600" role="alert">
+                                        {statusMessage}
+                                    </p>
+                                )}
                                 <div className="text-sm font-medium text-body">
                                     Not registered?{" "}
-                                    <a
+                                    <button
+                                        type="button"
                                         onClick={() =>
                                             dispatch(
                                                 setLoggingInState(
@@ -160,11 +179,10 @@ export const Login = () => {
                                                 ),
                                             )
                                         }
-                                        href="#"
                                         className="text-fg-brand hover:underline"
                                     >
                                         Create account
-                                    </a>
+                                    </button>
                                 </div>
                             </form>
                         </div>
