@@ -18,6 +18,7 @@ dotenv.config({ path: fileURLToPath(new URL("./.env", import.meta.url)) });
 const app = express();
 // officially creats an express application^ this is an object, it manages HTTP middleware, this object IS the webserver
 // ^ all backend logic runs through this
+  app.get("/health", (req, res) => res.send("ok"));
 app.use(cors());
 // app.use(cors()); is Express middleware that enables CORS (Cross‑Origin Resource Sharing).
 
