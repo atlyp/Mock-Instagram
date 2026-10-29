@@ -33,10 +33,26 @@ export const Login = () => {
                     password,
                 }),
             });
-            const data = await resp.json();
+            const responseText = await resp.text();
+            let data = {};
+            try {
+                data = responseText ? JSON.parse(responseText) : {};
+            } catch {
+                data = {};
+            }
+
+            if (resp.status === 429) {
+                setStatusMessage(
+                    "Too many login attempts. Please wait 15 minutes before trying again.",
+                );
+                return;
+            }
 
             if (!resp.ok || !data.success || !data.data?.[0]) {
-                setStatusMessage(data.message || "We couldn't sign you in.");
+                setStatusMessage(
+                    data.message ||
+                        `The login request failed (HTTP ${resp.status}). Please try again.`,
+                );
                 return;
             }
 
