@@ -205,44 +205,6 @@ router.get("/populateUsers", async (req, res) => {
   // This closes the current block, call, or object.
 });
 // This closes the current block, call, or object.
-router.delete("/delete", async (req, res) => {
-    console.log("delete endpoint reached!!")
-  // DELETE /delete removes all users from the database; keep this for controlled development use.
-  // get method is meant to recieve data without changing state of the server- delete is MEANT to change the state of the database
-  try {
-    // This starts work that can fail, such as a database or bcrypt operation.
-    await User.deleteMany();
-    // Wait for this database or password operation to finish before continuing.
-
-    const users = await User.find();
-    // Fetch the current user records from MongoDB.
-    res.json({
-      // Send the route result as JSON so the frontend can read it.
-      message: "users were deleted",
-      // Confirm the users were deleted.
-      success: true,
-      // Tell the frontend this request succeeded.
-      data: users,
-      // Return the remaining users after the delete operation.
-    });
-    // This closes the current block, call, or object.
-  } catch (error) {
-    // This handles failures from the database or password work above.
-    console.error("There was an error deleting users", error);
-    // Log the failure on the server so it can be diagnosed.
-    res.status(500).json({
-      // Tell the caller the server could not complete the request.
-      success: false,
-      // Tell the frontend this request failed.
-      message: "There was an error deleting users.",
-      // Explain that the user deletion did not finish.
-    });
-    // This closes the current block, call, or object.
-  }
-  // This closes the current block, call, or object.
-
-  // ^how we delete from the database
-});
 // This closes the current block, call, or object.
 router.post("/signUp", async (req, res) => {
   // POST /signUp validates the new account details and saves the account.

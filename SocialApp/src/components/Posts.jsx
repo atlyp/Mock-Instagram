@@ -3,6 +3,7 @@ import { CardEl } from "./CardEl";
 import { Button } from "./Button";
 import { useSelector } from "react-redux";
 import { FaTrash } from "react-icons/fa";
+import { apiUrl } from "../config/api";
 
 export const Posts = () => {
     const [posts, setPosts] = useState(null);
@@ -11,7 +12,7 @@ export const Posts = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const resp = await fetch("http://localhost:5000/posts/getAllPosts");
+                const resp = await fetch(apiUrl("/posts/getAllPosts"));
                 if (!resp.ok) throw new Error("Could not load posts.");
                 const data = await resp.json();
                 setPosts(data.posts ?? []);
@@ -30,7 +31,7 @@ export const Posts = () => {
         try {
             const options = { method: "delete" };
             const resp = await fetch(
-                `http://localhost:5000/posts/deletePost/${id}`,
+                apiUrl(`/posts/deletePost/${id}`),
                 options,
             );
             if (!resp.ok) throw new Error("Could not delete the post.");

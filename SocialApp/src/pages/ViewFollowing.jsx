@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { CardEl } from "../components/CardEl.jsx";
 import { handleViewUser } from "../utils/handleViewUser.js";
+import { apiUrl } from "../config/api";
 
 export const ViewFollowing = () => {
     const location = useLocation();
@@ -12,7 +13,7 @@ export const ViewFollowing = () => {
         whoIFollow = whoIFollow?.split(" ").join("-");
         try {
             const resp = await fetch(
-                `http://localhost:5000/getMyFollowersOrWhoFollowsMe/${whoIFollow}`,
+                apiUrl(`/getMyFollowersOrWhoFollowsMe/${whoIFollow}`),
             );
             const data = await resp.json();
             console.log(data);

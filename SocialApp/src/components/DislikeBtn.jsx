@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./Button";
 import { TiHeartFullOutline } from "react-icons/ti";
+import { apiUrl } from "../config/api";
 
 export const DislikeBtn = ({
     postItself,
@@ -22,7 +23,7 @@ export const DislikeBtn = ({
         };
         try {
             const resp = await fetch(
-                `http://localhost:5000/posts/unlikeAPost/${postId}`,
+                apiUrl(`/posts/unlikeAPost/${postId}`),
                 options,
             );
             const data = await resp.json();

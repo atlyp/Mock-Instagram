@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Button } from "./Button";
 import { FaCheckDouble } from "react-icons/fa6";
+import { apiUrl } from "../config/api";
 
 export const UnfollowBtn = ({ them, me, onHandleFollowState }) => {
     const [whoIAm, setWhoIAm] = useState(me);
@@ -44,7 +45,7 @@ export const UnfollowBtn = ({ them, me, onHandleFollowState }) => {
         };
         try {
             const response = await fetch(
-                `http://localhost:5000/unFollowSomeone/${whoIAm._id}/${them._id}`,
+                apiUrl(`/unFollowSomeone/${whoIAm._id}/${them._id}`),
                 options,
             );
             const data = await response.json();

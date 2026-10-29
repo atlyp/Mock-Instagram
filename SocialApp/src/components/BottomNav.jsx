@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { Button } from "./Button";
+import { apiUrl } from "../config/api";
 
 export const BottomNav = () => {
     const [makingNewPost, setMakingNewPost] = useState(false);
@@ -27,7 +28,7 @@ export const BottomNav = () => {
         };
         try {
             const response = await fetch(
-                `http://localhost:5000/posts/createAPost/${id}`,
+                apiUrl(`/posts/createAPost/${id}`),
                 options,
             );
             if (!response.ok) {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { StatusCard } from "../components/StatusCard";
 import { AccountStat } from "../components/AccountStat";
+import { apiUrl } from "../config/api";
 
 export const ViewUser = () => {
     const location = useLocation();
@@ -13,7 +14,7 @@ export const ViewUser = () => {
     const getThisUsersPosts = async (id) => {
         try {
             const resp = await fetch(
-                `http://localhost:5000/posts/getThisUsersPosts/${id}`,
+                apiUrl(`/posts/getThisUsersPosts/${id}`),
             );
             const data = await resp.json();
             console.log(data);

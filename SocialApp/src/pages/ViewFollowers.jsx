@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { CardEl } from "../components/CardEl.jsx";
 import { handleViewUser } from "../utils/handleViewUser.js";
+import { apiUrl } from "../config/api";
 
 export const ViewFollowers = () => {
     const location = useLocation();
@@ -14,7 +15,7 @@ export const ViewFollowers = () => {
         theFollowers = theFollowers?.split(" ").join("-");
         try {
             const resp = await fetch(
-                `http://localhost:5000/getMyFollowersOrWhoFollowsMe/${theFollowers}`,
+                apiUrl(`/getMyFollowersOrWhoFollowsMe/${theFollowers}`),
             );
             const data = await resp.json();
             console.log(data);

@@ -1,5 +1,6 @@
 import { Button } from "./Button";
 import { TiHeartOutline } from "react-icons/ti";
+import { apiUrl } from "../config/api";
 
 export const LikeBtn = ({
     postItself,
@@ -34,7 +35,7 @@ export const LikeBtn = ({
         };
         try {
             const resp = await fetch(
-                `http://localhost:5000/posts/likeAPost/${postsId}/${myId}`,
+                apiUrl(`/posts/likeAPost/${postsId}/${myId}`),
                 options,
             );
             const data = await resp.json();

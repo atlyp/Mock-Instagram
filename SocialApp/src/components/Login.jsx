@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoggingInState, signSomeoneIn } from "../redux/social";
 import { useNavigate } from "react-router";
+import { apiUrl } from "../config/api";
 export const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -16,7 +17,7 @@ export const Login = () => {
 
     const databaseLogin = async (e) => {
         e.preventDefault();
-        const resp = await fetch("http://localhost:5000/loggingIn", {
+        const resp = await fetch(apiUrl("/loggingIn"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

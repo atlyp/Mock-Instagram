@@ -7,6 +7,7 @@ import {
   loggingInState,
 } from "../redux/social";
 import { useNavigate } from "react-router";
+import { apiUrl } from "../config/api";
 
 export const SignUp = () => {
   const { ourUsers, loggedIn } = useSelector((state) => state.socialKey);
@@ -26,7 +27,7 @@ export const SignUp = () => {
   const handleUserSIgnUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/signUp", {
+      const response = await fetch(apiUrl("/signUp"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

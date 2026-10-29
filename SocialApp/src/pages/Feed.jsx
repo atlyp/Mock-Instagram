@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StatusCard } from "../components/StatusCard";
+import { apiUrl } from "../config/api";
 
 
 export const Feed = () => {
@@ -14,7 +15,7 @@ export const Feed = () => {
         const getPostsOfWhoIfollow = async () => {
             try {
                 const resp = await fetch(
-                    `http://localhost:5000/posts/myFeed/${whoImFollowing}`,
+                    apiUrl(`/posts/myFeed/${whoImFollowing}`),
                 );
                 if (!resp.ok) throw new Error("Could not load your feed.");
                 const data = await resp.json();

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 import { CardEl } from "../components/CardEl";
 import { FollowBtns } from "../components/FollowBtns";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { apiUrl } from "../config/api";
 export const SearchUsers = () => {
     const [personSearched, setPersonSearched] = useState("");
     const [allUsers, setAllUsers] = useState(null);
@@ -13,7 +14,7 @@ export const SearchUsers = () => {
     const searchInputRef = useRef();
     const getMe = async (id) => {
         console.log("this function happened");
-        const resp = await fetch(`http://localhost:5000/getMe/${id}`);
+        const resp = await fetch(apiUrl(`/getMe/${id}`));
         const data = await resp.json();
         console.log(data.data[0]);
         setPersonIAm(data.data[0]);
@@ -33,7 +34,7 @@ export const SearchUsers = () => {
         setTimeout(async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/findUser/${name}`,
+                    apiUrl(`/findUser/${encodeURIComponent(name)}`),
                 );
                 const data = await response.json();
                 // console.log(data);
@@ -85,7 +86,7 @@ export const SearchUsers = () => {
         };
         try {
             const response = await fetch(
-                `http://localhost:5000/followSomeone/${personIAm._id}/${them._id}`,
+                apiUrl(`/followSomeone/${personIAm._id}/${them._id}`),
                 options,
             );
             const data = await response.json();

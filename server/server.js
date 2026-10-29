@@ -35,7 +35,6 @@ if (isProduction && allowedOrigins.length === 0) {
 const app = express();
 // officially creats an express application^ this is an object, it manages HTTP middleware, this object IS the webserver
 // ^ all backend logic runs through this
-  app.get("/health", (req, res) => res.send("ok"));
 app.disable("x-powered-by");
 app.use(
     helmet({
@@ -55,6 +54,7 @@ app.use(
         optionsSuccessStatus: 204,
     }),
 );
+app.get("/health", (req, res) => res.send("ok"));
 // app.use(cors()); is Express middleware that enables CORS (Cross‑Origin Resource Sharing).
 
 //^^ In simple terms: it allows your backend API to accept requests from a different domain or port.
@@ -123,4 +123,3 @@ Code explanation 3: Node begins listening for incoming connections.
 Simple explanation 1: The server starts running.
 Simple explanation 2: It waits for requests from React.
 Simple explanation 3: Port 5000 is the backend address. */
-console.log("this is the end of sever.js ");
