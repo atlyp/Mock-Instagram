@@ -1,6 +1,6 @@
-import User from "../server/models/User.js";
 import dotenv from "dotenv";
 import express from "express";
+import { fileURLToPath } from "node:url";
 // this will handle requests from react ^, we are loading the webserver framework, this is what runs our backend
 
 import connectDB from "./config/db.js";
@@ -13,10 +13,11 @@ import userRoutes from "./routes/userRoutes.js";
 // ^ importing our router module which contains API endpoints, in other words we are loaing our API routes, these routes will respond to use requests- react calls those end points
 import cors from "cors";
 
+dotenv.config({ path: fileURLToPath(new URL("./.env", import.meta.url)) });
+
 const app = express();
 // officially creats an express application^ this is an object, it manages HTTP middleware, this object IS the webserver
 // ^ all backend logic runs through this
-dotenv.config();
 app.use(cors());
 // app.use(cors()); is Express middleware that enables CORS (Cross‑Origin Resource Sharing).
 
@@ -24,8 +25,6 @@ app.use(cors());
 // app.use(cors({ optionsSuccessStatus: 200 }));
 app.use(express.json());
 // import signUpRoutes from "./routes/signUpRoutes.js";
-connectDB();
-// ^ this line is calling the database connection function- starts the database connection. NOW our serve is linked to MongoDB, this is how the data is saved and read
 app.use("/", userRoutes);
 
 app.use("/posts", postRoutes);
@@ -38,9 +37,23 @@ app.use("/posts", postRoutes);
 // any requests to "/api/users" go to the router and the router handles the endpoint logic
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => {
-    console.log(`server running on port ${port}`);
-});
+
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(port, () => {
+      console.log(`server running on port ${port}`);
+    });
+  } catch (error) {
+    console.error(
+      "Could not start the server because MongoDB connection failed.",
+      error,
+    );
+    process.exit(1);
+  }
+};
+
+startServer();
 
 /**Code explanation 1: Starts the HTTP server.
  Code explanation 2: Binds the server to port 5000.
