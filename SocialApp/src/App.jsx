@@ -48,7 +48,7 @@ function App() {
           <BrowserRouter>
                <div
                     onClick={(e) => setWhatwasClicked(e.target)}
-                    className={`${darkMode ? "dark" : ""} wholeContainer dark:bg-black pt-[8rem]`}
+                    className={`${darkMode ? "dark" : ""} wholeContainer dark:bg-black pt-[5.5rem] sm:pt-[6rem]`}
                >
                     <NavbarEl whatJustGotClicked={whatWasClicked} />
                     <div className="appNotNavContainer pb-20 h-min">

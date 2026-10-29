@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Avatar } from "./Avatar";
 import { useDispatch, useSelector } from "react-redux";
-import { TiSocialInstagram } from "react-icons/ti";
-import { useLocation, useNavigate } from "react-router";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { useNavigate } from "react-router";
 import { FaMoon, FaSun } from "react-icons/fa6";
 import { setDarkMode } from "../redux/social";
 
@@ -16,29 +16,13 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
      const dispatch = useDispatch();
      let navigate = useNavigate();
 
-     const navRef = useRef();
-     const handleNavScroll = (e) => {
-          const navBar = navRef.current;
-
-          navBar?.classList.add("navHidden");
-          setTimeout(() => {
-               navBar?.classList.remove("navHidden");
-          }, 2000);
-     };
-     useEffect(() => {
-          // console.dir(navRef.current);
-          const windowItself = navRef.current.ownerDocument;
-          // windowItself.addEventListener("scroll", (e) => handleNavScroll(e));
-     }, []);
-     // scroll move function^
      const handleDMode = () => {
           dispatch(setDarkMode(!darkMode));
           localStorage.setItem("darkMode", JSON.stringify(!darkMode));
      };
      return (
           <nav
-               ref={navRef}
-               className="navbarEl bg-neutral-primary fixed   z-20 sm:left-0 left-[11%] top-0 start-0 border-b border-default rounded-[15px] sm:rounded-0 sm:w-full w-[80%]"
+               className="navbarEl bg-neutral-primary fixed left-0 top-0 z-20 w-full border-b border-default"
           >
                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     <a
@@ -50,18 +34,26 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                                    : navigate("/");
                               handleDropdown();
                          }}
-                         className="flex items-center space-x-3 rtl:space-x-reverse"
+                         className="navbarBrand flex items-center space-x-3 rtl:space-x-reverse"
                     >
-                         <TiSocialInstagram className="  bg-linear-[25deg,orange_20%,hotpink_60%,purple_110%] text-5xl font-thin rounded-2xl  text-black dark:text-white" />
+                         <FaPeopleGroup className="bg-linear-[25deg,orange_20%,hotpink_60%,purple_110%] text-5xl rounded-2xl text-black dark:text-white" />
                          <span className="self-center text-3xl text-heading font-semibold whitespace-nowrap">
-                              Instagram
+                              Social.Com
                          </span>
                     </a>
-                    {darkMode ? (
-                         <FaSun onClick={handleDMode} className="dModeBtn cursor-pointer dark:text-white" />
-                    ) : (
-                         <FaMoon onClick={handleDMode} className="dModeBtn cursor-pointer " />
-                    )}
+                    <button
+                         type="button"
+                         onClick={handleDMode}
+                         className="navbarThemeToggle"
+                         aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+                         aria-pressed={darkMode}
+                    >
+                         {darkMode ? (
+                              <FaSun className="dModeBtn cursor-pointer dark:text-white" aria-hidden="true" />
+                         ) : (
+                              <FaMoon className="dModeBtn cursor-pointer" aria-hidden="true" />
+                         )}
+                    </button>
                     <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                          {userLoggedInCurrently ? <Avatar whatTheUserJustCliked={whatJustGotClicked} /> : ""}
                          {/* <!-- Dropdown menu --> */}
@@ -72,7 +64,8 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                               type="button"
                               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
                               aria-controls="navbar-user"
-                              aria-expanded="false"
+                              aria-expanded={dropdown}
+                              aria-label={dropdown ? "Close navigation menu" : "Open navigation menu"}
                          >
                               <span className="sr-only">Open main menu</span>
                               <svg

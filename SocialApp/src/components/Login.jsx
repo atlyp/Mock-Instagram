@@ -6,9 +6,7 @@ export const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     let navigate = useNavigate();
-    const { loggingInState, userLoggedInCurrently } = useSelector(
-        (state) => state.socialKey,
-    );
+    const { loggingInState } = useSelector((state) => state.socialKey);
     const dispatch = useDispatch();
 
     const handleInfo = (e, func) => {
@@ -47,20 +45,20 @@ export const Login = () => {
 
     return (
         <>
-            <section className="bg-neutral-primary h-full">
-                <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16 h-full">
-                    <div className="flex flex-col justify-center">
+            <section className="authSection bg-neutral-primary">
+                <div className="authLayout mx-auto">
+                    <div className="authIntro flex flex-col justify-center">
                         <h1 className="mb-6 text-4xl font-bold tracking-tighter text-heading md:text-5xl lg:text-6xl">
-                            We invest in the world’s potential
+                            Good people. Good moments. Stay connected.
                         </h1>
                         <p className="mb-8 text-base font-normal text-body md:text-xl">
-                            Here at Instagram we focus on our users- and more importantly their DATE-ER!!!!.
+                            Share the little moments, meet your people, and keep up with the ones who matter.
                         </p>
                         <a
                             href="#"
                             className="text-fg-brand hover:underline font-medium text-lg inline-flex items-center"
                         >
-                            Read more about our IG
+                            A place for your people
                             <svg
                                 className="w-6 h-6 rtl:rotate-180 ms-1.5"
                                 aria-hidden="true"
@@ -81,14 +79,12 @@ export const Login = () => {
                         </a>
                     </div>
                     <div>
-                        <div className="w-full bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs">
+                        <div className="authCard w-full">
                             <form
                                 onSubmit={(e) => databaseLogin(e)}
                                 method="POST"
                             >
-                                <h5 className="text-xl font-semibold text-heading mb-6">
-                                    Sign in to our platform
-                                </h5>
+                                <h2 className="text-heading">Welcome back</h2>
                                 <div className="mb-4">
                                     <label
                                         htmlFor="username"
@@ -103,7 +99,7 @@ export const Login = () => {
                                         type="text"
                                         id="username"
                                         className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                        placeholder="example@company.com"
+                                        placeholder="@yourusername"
                                         required
                                     />
                                 </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { CardEl } from "../components/CardEl.jsx";
-import { handleViewUser } from "../components/StatusCard.jsx";
+import { handleViewUser } from "../utils/handleViewUser.js";
 
 export const ViewFollowers = () => {
     const location = useLocation();

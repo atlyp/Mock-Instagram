@@ -1,6 +1,3 @@
-* {
-    transition: all 500ms ease-in-out;
-}
 @font-face {
     font-family: bangers;
     src: url("./assets/fonts/Bangers/Bangers-Regular.ttf");
@@ -16,10 +13,32 @@
 }
 .postsContainer {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    padding: 2rem;
+    grid-template-columns: minmax(0, 1fr);
+    width: min(100% - 1.5rem, 42rem);
+    margin: 0 auto;
+    padding: 0.75rem 0 2rem;
     justify-items: center;
-    gap: 4rem;
+    gap: 1rem;
+    color: #262626;
+    font-size: 1rem;
+}
+
+.postsHeading {
+    width: 100%;
+    margin: 0 0 0.25rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+.postsEmpty {
+    width: 100%;
+    padding: 1.5rem;
+    border: 1px solid #e8e4e6;
+    border-radius: 1rem;
+    background: #fff;
+    color: #737373;
+    text-align: center;
 }
 
 .containerForLikeButtons {
@@ -33,26 +52,433 @@
     top: -15rem;
 }
 .navbarEl {
-    transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 2px 2px 2px rgb(255, 171, 171);
+    inset: 0 0 auto;
+    width: 100%;
+    border-radius: 0 0 1rem 1rem;
+    border-color: rgb(229 231 235 / 80%);
+    box-shadow: 0 4px 20px rgb(25 20 22 / 7%);
+    transition: top 250ms ease, background-color 200ms ease;
+}
+
+.navbarEl > div {
+    gap: 0.75rem;
+    max-width: 72rem;
+    min-height: 4.25rem;
+    padding: 0.65rem 1rem;
+}
+
+.navbarBrand {
+    min-width: 0;
+    gap: 0.55rem;
+}
+
+.navbarBrand svg {
+    flex: none;
+    color: #d62976;
+}
+
+.navbarBrand span {
+    overflow: hidden;
+    font-size: 1.35rem;
+    letter-spacing: -0.045em;
+    text-overflow: ellipsis;
+}
+
+.navbarThemeToggle {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: none;
+    place-items: center;
+    border-radius: 9999px;
+    transition: background-color 180ms ease;
+}
+
+.navbarThemeToggle:hover {
+    background: rgb(214 41 118 / 10%);
+}
+
+.navbarEl #navbar-user:not(.hidden) {
+    padding: 0 1rem 0.75rem;
+}
+
+.navbarEl #navbar-user ul {
+    gap: 0.2rem;
+    border-radius: 0.85rem;
+}
+
+.navbarEl #navbar-user a {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
 }
 
 .dModeBtn {
-    font-size: 1.9rem;
+    font-size: 1.25rem;
 }
 .wholeContainer {
     min-height: 100vh;
+    background: #faf8f8;
+    color: #262626;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
 }
+
+.wholeContainer.dark {
+    background: #0c0a0b;
+    color: #f5f2f3;
+}
+
 .appNotNavContainer {
-    height: 100%;
+    min-height: calc(100vh - 5.5rem);
 }
+
+.feedPage {
+    width: min(100% - 1.5rem, 42rem);
+    margin: 0 auto;
+    padding: 0.5rem 0 2rem;
+}
+
+.searchPage {
+    width: min(100% - 1.5rem, 42rem);
+    min-height: calc(100vh - 9rem);
+    margin: 0 auto;
+    padding: 0.75rem 0 2rem;
+}
+
+.searchPage h1 {
+    margin: 0 0 1rem;
+    color: #262626;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+.dark .searchPage h1 {
+    color: #f5f2f3;
+}
+
+.searchPage input[type="text"] {
+    width: 100%;
+    min-height: 2.9rem;
+    margin: 0 0 1rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid #ded7da;
+    border-radius: 0.75rem;
+    background: #fff;
+    color: #262626;
+    font-size: 1rem;
+}
+
+.dark .searchPage input[type="text"] {
+    border-color: #494047;
+    background: #211b1e;
+    color: #f5f2f3;
+}
+
+.cardEl {
+    width: 100%;
+    max-width: 100%;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    border: 1px solid #e8e4e6;
+    border-radius: 0.9rem;
+    background: #fff;
+    box-shadow: 0 2px 12px rgb(25 20 22 / 4%);
+}
+
+.dark .cardEl {
+    border-color: #30282c;
+    background: #171315;
+}
+
+.feedHeading {
+    margin: 0 0 1rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+.feedEmpty {
+    padding: 1.25rem;
+    border: 1px solid #e8e4e6;
+    border-radius: 1rem;
+    background: #fff;
+    color: #737373;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.dark .feedEmpty,
+.dark .postsEmpty {
+    border-color: #30282c;
+    background: #171315;
+    color: #c4b8be;
+}
+
+.postCard {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 1rem;
+    overflow-wrap: anywhere;
+    border: 1px solid #e8e4e6;
+    border-radius: 0.9rem;
+    background: #fff;
+    box-shadow: 0 2px 12px rgb(25 20 22 / 4%);
+    color: #262626;
+}
+
+.dark .postCard {
+    border-color: #30282c;
+    background: #171315;
+    color: #f5f2f3;
+}
+
+.postAuthor {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    color: #262626;
+    font-size: 0.92rem;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.postAuthor button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.dark .postAuthor {
+    color: #f5f2f3;
+}
+
+.postTitle {
+    margin: 0.6rem 0 0.4rem;
+    font-size: 1.05rem;
+    font-weight: 650;
+    line-height: 1.45;
+}
+
+.postContent {
+    margin: 0 0 0.8rem;
+    color: #484246;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.dark .postContent {
+    color: #ded7da;
+}
+
+.postMeta {
+    display: block;
+    margin-top: 0.35rem;
+    color: #81777c;
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+.authSection {
+    min-height: calc(100vh - 5.5rem);
+}
+
+.authLayout {
+    display: grid;
+    width: min(100% - 2rem, 28rem);
+    min-height: inherit;
+    align-content: center;
+    gap: 1.5rem;
+    padding: 1.5rem 0 2rem;
+}
+
+.authIntro {
+    display: none;
+}
+
+.authCard {
+    padding: 1.35rem;
+    border: 1px solid #ebe5e8;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 12px 32px rgb(25 20 22 / 6%);
+}
+
+.dark .authCard {
+    border-color: #30282c;
+    background: #171315;
+}
+
+.authCard h2 {
+    margin: 0 0 1.15rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.authCard input:not([type="checkbox"]) {
+    min-height: 2.9rem;
+    border-radius: 0.65rem;
+}
+
+.authCard input:not([type="checkbox"]):focus,
+.searchPage input[type="text"]:focus,
+.newPostDialog input:focus,
+.newPostDialog textarea:focus {
+    border-color: #d62976;
+    outline: 3px solid rgb(214 41 118 / 18%);
+}
+
+.authIntro h1 {
+    max-width: 13ch;
+    font-size: clamp(2.4rem, 5vw, 4.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+}
+
+.authIntro p {
+    max-width: 32rem;
+    line-height: 1.7;
+}
+
+.authCard button[type="submit"] {
+    min-height: 2.9rem;
+    border-radius: 0.65rem;
+    background: linear-gradient(110deg, #f97316, #e1306c 55%, #8b35c8);
+}
+
+.authCard button[type="submit"]:hover {
+    filter: brightness(0.96);
+}
+
+.mobileBottomNav {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 30;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-height: calc(3.75rem + env(safe-area-inset-bottom));
+    padding: 0.4rem 0.4rem env(safe-area-inset-bottom);
+    border-top: 1px solid #e8e4e6;
+    background: rgb(255 255 255 / 96%);
+    backdrop-filter: blur(14px);
+}
+
+.dark .mobileBottomNav {
+    border-color: #30282c;
+    background: rgb(23 19 21 / 96%);
+}
+
+.mobileBottomNav button {
+    display: grid;
+    min-width: 0;
+    min-height: 2.75rem;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: #575054;
+    font-size: 1.25rem;
+}
+
+.dark .mobileBottomNav button {
+    color: #eee7eb;
+}
+
+.mobileBottomNav .createPostNavButton {
+    justify-self: center;
+    width: 2.65rem;
+    min-height: 2.65rem;
+    align-self: center;
+    border-radius: 0.8rem;
+    background: linear-gradient(135deg, #f97316, #e1306c 55%, #8b35c8);
+    color: #fff;
+}
+
+.desktopCreateButton {
+    display: none;
+}
+
 .bottomNav {
     position: fixed;
     display: flex;
     justify-content: center;
-    height: fit-content;
+    height: auto;
+    width: auto;
+}
+
+.newPostOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    padding: 0;
+    border: 0;
+    background: rgb(15 10 13 / 58%);
+    backdrop-filter: blur(3px);
+    cursor: default;
+}
+
+.newPostDialog {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 41;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
+    border: 1px solid #ebe5e8;
+    border-radius: 1.25rem 1.25rem 0 0;
+    background: #fff;
+    box-shadow: 0 -12px 40px rgb(25 20 22 / 16%);
+}
+
+.dark .newPostDialog {
+    border-color: #30282c;
+    background: #171315;
+    color: #f5f2f3;
+}
+
+.newPostDialog form {
+    gap: 1rem;
+}
+
+.newPostDialog .newPostForm > button {
     width: 100%;
 }
+
+.newPostDialog .labelInputSpan {
+    width: 100%;
+    gap: 0.45rem;
+}
+
+.newPostDialog input,
+.newPostDialog textarea {
+    width: 100%;
+    min-height: 2.9rem;
+    padding: 0.75rem;
+    border: 1px solid #ded7da;
+    border-radius: 0.65rem;
+    background: #fff;
+    color: #262626;
+    font-size: 1rem;
+}
+
+.newPostDialog textarea {
+    min-height: 8rem;
+    resize: vertical;
+}
+
+.dark .newPostDialog input,
+.dark .newPostDialog textarea {
+    border-color: #494047;
+    background: #211b1e;
+    color: #f5f2f3;
+}
+
 .datetimespan {
     color: gray;
     font-style: italic;
@@ -91,3 +517,126 @@
         border-bottom-left-radius: 1rem;
         border-bottom-right-radius: 1rem;
     }
+
+ @media (min-width: 640px) {
+     .postsContainer {
+         width: min(100% - 2rem, 42rem);
+         gap: 1.25rem;
+         padding-top: 1rem;
+     }
+
+     .postCard {
+         padding: 1.25rem;
+     }
+
+     .authLayout {
+         width: min(100% - 3rem, 68rem);
+         grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
+         align-items: center;
+         gap: 2.5rem;
+     }
+
+     .authIntro {
+         display: block;
+     }
+
+     .authCard {
+         padding: 1.75rem;
+     }
+ }
+
+ @media (min-width: 768px) {
+     .navbarEl {
+         border-radius: 0 0 1.1rem 1.1rem;
+     }
+
+     .navbarEl > div {
+         min-height: 4.75rem;
+         padding-right: 1.5rem;
+         padding-left: 1.5rem;
+     }
+
+     .navbarBrand {
+         margin-right: auto;
+     }
+
+     .navbarBrand span {
+         font-size: 1.55rem;
+     }
+
+     .navbarEl #navbar-user {
+         width: auto;
+         margin: 0;
+         padding: 0;
+     }
+
+     .navbarEl #navbar-user ul {
+         align-items: center;
+         gap: 1.25rem;
+         padding: 0;
+         background: transparent;
+     }
+
+     .navbarEl #navbar-user a {
+         min-height: 2.5rem;
+     }
+
+     .feedPage,
+     .postsContainer,
+     .searchPage {
+         width: min(100% - 3rem, 42rem);
+     }
+
+     .feedHeading,
+     .postsHeading {
+         font-size: 1.55rem;
+     }
+
+     .postCard {
+         padding: 1.35rem;
+     }
+
+     .authSection {
+         min-height: calc(100vh - 6rem);
+     }
+
+     .mobileBottomNav {
+         display: none;
+     }
+
+     .desktopCreateButton {
+         position: fixed;
+         right: max(1.5rem, calc((100vw - 72rem) / 2));
+         bottom: 1.5rem;
+         z-index: 30;
+         display: grid;
+         width: 3.5rem;
+         height: 3.5rem;
+         place-items: center;
+         border: 0;
+         border-radius: 1.1rem;
+         background: linear-gradient(135deg, #f97316, #e1306c 55%, #8b35c8);
+         box-shadow: 0 8px 24px rgb(225 48 108 / 28%);
+         color: #fff;
+         font-size: 1.3rem;
+     }
+
+     .newPostDialog {
+         inset: 50% auto auto 50%;
+         width: min(100% - 2rem, 34rem);
+         max-height: min(85vh, 48rem);
+         padding: 1.5rem;
+         transform: translate(-50%, -50%);
+         border-radius: 1.25rem;
+     }
+ }
+
+ @media (prefers-reduced-motion: reduce) {
+     *,
+     *::before,
+     *::after {
+         scroll-behavior: auto !important;
+         transition-duration: 0.01ms !important;
+         animation-duration: 0.01ms !important;
+     }
+ }

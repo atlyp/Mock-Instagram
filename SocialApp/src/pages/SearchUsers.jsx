@@ -21,7 +21,6 @@ export const SearchUsers = () => {
     const navigate = useNavigate();
     useEffect(() => {
         setPersonIAm(location.state.user);
-        searchInputRef.current.focus();
     }, []);
     useEffect(() => {
         if (personIAm?._id) {
@@ -110,8 +109,8 @@ export const SearchUsers = () => {
         navigate("/ViewUser", { state: { user: user._id } });
     };
     return (
-        <div className="pl-5 h-screen">
-            <h1 className="text-5xl font-extrabold text-pink-500">Search Users</h1>
+        <main className="searchPage">
+            <h1>Find your people</h1>
             <input placeholder="Type in a UserName"
                 ref={searchInputRef}
                 className="dark:text-black rounded-lg mt-5 userSearchInput dark:bg-gray-700 dark:text-white"
@@ -175,6 +174,6 @@ export const SearchUsers = () => {
                     No User Found!
                 </span>
                 : ""}
-        </div>
+        </main>
     );
 };

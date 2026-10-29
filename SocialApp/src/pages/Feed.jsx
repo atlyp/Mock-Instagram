@@ -9,23 +9,27 @@ export const Feed = () => {
     )?.following?.list;
     console.log("who i follow", whoImFollowing);
 
-    const getPostsOfWhoIfollow = async (whoImFollowing) => {
-        try {
-            const resp = await fetch(
-                `http://localhost:5000/posts/myFeed/${whoImFollowing}`,
-            );
-            // REMMEBER to change the endpoint logic- so we aren't grabbing every post
-            const data = await resp.json();
-            // console.log(data);
-            setPosts(data.yourFeed);
-        } catch (error) {
-            console.error("front end error getting your feed");
-        }
-    };
-
     useEffect(() => {
-        getPostsOfWhoIfollow(whoImFollowing);
-    }, []);
+        let isCurrent = true;
+        const getPostsOfWhoIfollow = async () => {
+            try {
+                const resp = await fetch(
+                    `http://localhost:5000/posts/myFeed/${whoImFollowing}`,
+                );
+                if (!resp.ok) throw new Error("Could not load your feed.");
+                const data = await resp.json();
+                if (isCurrent) setPosts(data.yourFeed ?? []);
+            } catch (error) {
+                console.error("There was an error getting your feed", error);
+                if (isCurrent) setPosts([]);
+            }
+        };
+        void getPostsOfWhoIfollow();
+
+        return () => {
+            isCurrent = false;
+        };
+    }, [whoImFollowing]);
     const postsOfWhoIFollow =
         posts &&
         posts.filter((post) => {
@@ -33,14 +37,10 @@ export const Feed = () => {
         });
 
     return (
-        <div className="mb-5 dark:text-white flex-col flex items-center">
-            {postsOfWhoIFollow ? (
-                <span className="text-5xl">Your feed</span>
-            ) : (
-                ""
-            )}
+        <main className="feedPage dark:text-white">
+            <h1 className="feedHeading">Your feed</h1>
             {postsOfWhoIFollow &&
-                postsOfWhoIFollow.reverse().map((post) => {
+                [...postsOfWhoIFollow].reverse().map((post) => {
                     const timeAndDayItWasCreated = new Date(post.createdAt);
 
                     return (
@@ -49,7 +49,6 @@ export const Feed = () => {
                             key={post._id}
                             user={post.userId}
                             id={post.userId}
-                            styles={"m-[5rem]"}
                             title={post.title}
                             content={post.body}
                             author={post.author}
@@ -57,7 +56,12 @@ export const Feed = () => {
                         ></StatusCard>
                     );
                 })}
-            {!postsOfWhoIFollow?.length ? "You don't follow anybody!" : ""}
-        </div>
+            {postsOfWhoIFollow?.length === 0 ? (
+                <p className="feedEmpty">
+                    Your feed is quiet for now. Follow people to see their posts here.
+                </p>
+            ) : null}
+            {posts === null ? <p className="feedEmpty">Loading your feed…</p> : null}
+        </main>
     );
 };

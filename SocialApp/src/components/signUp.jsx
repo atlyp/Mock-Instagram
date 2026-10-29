@@ -62,22 +62,20 @@ export const SignUp = () => {
 
   return (
     <>
-      <section className="bg-neutral-primary">
-        <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16">
-          <div className="flex flex-col justify-center">
+      <section className="authSection bg-neutral-primary">
+      <div className="authLayout mx-auto">
+        <div className="authIntro flex flex-col justify-center">
             <h1 className="mb-6 text-4xl font-bold tracking-tighter text-heading md:text-5xl lg:text-6xl">
-              We push YOU, forward.
+              Find your people.
             </h1>
             <p className="mb-8 text-base font-normal text-body md:text-xl">
-              Here at Social.Com we focus on our users by hosting THE platform
-              where to connect, inspire, and captivate global audiences. Foster
-              social, personal, and economic growth.
+              Share what you love, find your community, and keep the people in your life close.
             </p>
             <a
               href="#"
               className="text-fg-brand hover:underline font-medium text-lg inline-flex items-center"
             >
-              Read more about our app
+              Your next favorite corner of the internet
               <svg
                 className="w-6 h-6 rtl:rotate-180 ms-1.5"
                 aria-hidden="true"
@@ -98,16 +96,14 @@ export const SignUp = () => {
             </a>
           </div>
           <div>
-            <div className="w-full bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs">
+            <div className="authCard w-full">
               <form
                 method="POST"
                 onSubmit={(e) =>
                   handleUserSIgnUp(e, email, password, username)
                 }
               >
-                <h5 className="text-xl font-semibold text-heading mb-6">
-                  SIGN UP
-                </h5>
+                <h2 className="text-heading">Create your account</h2>
                 <div className="mb-4">
                   <label
                     htmlFor="username"

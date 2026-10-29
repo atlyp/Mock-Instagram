@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router";
 import { LikeBTNSLogic } from "./LikeBTNSLogic";
 import { useState } from "react";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { handleViewUser } from "../utils/handleViewUser";
 
 export const StatusCard = ({
     title,
@@ -15,46 +14,31 @@ export const StatusCard = ({
     post,
 }) => {
     const navigate = useNavigate();
-    const { userLoggedInCurrently } = useSelector((state) => state.socialKey);
-    const me = userLoggedInCurrently;
-    const [likes, setLikes] = useState(0);
-    useEffect(() => {
-        setLikes(post?.likes?.count);
-    }, []);
+    const [likes, setLikes] = useState(post?.likes?.count ?? 0);
+    const postedAt = new Date(dateTimeCreated);
+    const now = new Date();
+    const wasPostedToday =
+        postedAt.getFullYear() === now.getFullYear() &&
+        postedAt.getMonth() === now.getMonth() &&
+        postedAt.getDate() === now.getDate();
+    const timeItWasCreated = new Intl.DateTimeFormat(undefined, {
+        hour: "numeric",
+        minute: "2-digit",
+    }).format(postedAt);
+    const dateItWasCreated = new Intl.DateTimeFormat(undefined, {
+        dateStyle: "medium",
+    }).format(postedAt);
+    const viewUser = () => handleViewUser(user, navigate);
 
-    // date control!
-    const amOrPm = dateTimeCreated.getHours() >= 12 ? "PM" : "AM";
-    const hours =
-        dateTimeCreated.getHours() == 0 ? 12 : dateTimeCreated.getHours();
-    const minutes = `${dateTimeCreated.getMinutes() < 10 ? `0${dateTimeCreated.getMinutes()}` : dateTimeCreated.getMinutes()}`;
-    const timeItWasCreated = `${hours > 12 ? hours - 12 : hours}:${minutes} ${amOrPm}`;
-
-    // console.log(dateTimeCreated);
-    const dateOfPost = dateTimeCreated.toJSON().split("T")[0];
-    // console.log(dateOfPost);
-    console.log(dateOfPost);
-    const date = Temporal.PlainDate.from(dateOfPost);
-    console.log(date);
-    const now = Temporal.Now.plainDateISO();
-    // console.log(date, now);
-    const duration = now.since(date, { smallestUnit: "weeks" });
-    const formatter = new Intl.DurationFormat("en-US", { style: "long" });
-    const howLongAgo = formatter.format(duration);
-    // console.log(`It's been ${formatter.format(duration)} since that day...`);
-    const wasPostedToday = howLongAgo == "-1 day";
-    // date control^!
     return (
-        <div
-            className={`bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-lg ${styles} mb-4 dark:text-white`}
-        >
-            <h4 className="cursor-pointer w-min p-1 text-xl clickViewAccount hover:font-bold hover:text-3xl hover:text-pink-500 font-[inter-italic]">
-                <a onClick={() => handleViewUser(user, navigate)}>@{author}</a>
+        <article className={`postCard ${styles ?? ""}`}>
+            <h4 className="postAuthor clickViewAccount">
+                <button type="button" onClick={viewUser}>@{author}</button>
             </h4>{" "}
-            says
-            <h5 className="mb-3 text-xl font-semibold tracking-tight text-heading leading-8 flex">
+            <h5 className="postTitle">
                 <span className="dark:text-white italic">- {title} </span>
             </h5>
-            <p className="text-body mb-6 text-3xl">"{content}"</p>
+            <p className="postContent">{content}</p>
             {children}
             <LikeBTNSLogic
                 likeQntty={likes}
@@ -64,23 +48,11 @@ export const StatusCard = ({
             <br />
             {likes} like{likes == 1 ? "" : "s"}
             <br />
-            <span className="datetimespan">
-                {wasPostedToday ? "" : `at ${timeItWasCreated}`}
-                <br />
+            <time className="postMeta datetimespan" dateTime={postedAt.toISOString()}>
                 {wasPostedToday
                     ? `Today at ${timeItWasCreated}`
-                    : howLongAgo + " ago"}
-            </span>
-        </div>
+                    : `${dateItWasCreated} at ${timeItWasCreated}`}
+            </time>
+        </article>
     );
-};
-export const handleViewUser = (user, handleNav) => {
-    console.log(user);
-
-    localStorage.removeItem("userViewed");
-    localStorage.setItem("userViewed", JSON.stringify(user));
-    // const personViewed = JSON.parse(localStorage.getItem("userViewed"))
-    handleNav("/ViewUser", {
-        state: { ...location.state, userViewed: user },
-    });
 };

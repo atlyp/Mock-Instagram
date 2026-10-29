@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { CardEl } from "../components/CardEl.jsx";
-import { handleViewUser } from "../components/StatusCard.jsx";
+import { handleViewUser } from "../utils/handleViewUser.js";
 
 export const ViewFollowing = () => {
     const location = useLocation();
