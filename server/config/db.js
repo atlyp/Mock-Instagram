@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
-console.log(
-  "env keys:",
-  Object.keys(process.env).filter((k) => k.includes("MONGO")),
-);
+console.log("env keys:", Object.keys(process.env).sort());
 
 const connectDB = async () => {
   const mongoUri = process.env.MONGO_URI;
