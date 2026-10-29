@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Avatar } from "./Avatar";
 import { useDispatch, useSelector } from "react-redux";
-import { FaPeopleGroup } from "react-icons/fa6";
+import { FaMobileScreenButton } from "react-icons/fa6";
 import { useNavigate } from "react-router";
 import { FaMoon, FaSun } from "react-icons/fa6";
 import { setDarkMode } from "../redux/social";
@@ -36,9 +36,9 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                          }}
                          className="navbarBrand flex items-center space-x-3 rtl:space-x-reverse"
                     >
-                         <FaPeopleGroup className="bg-linear-[25deg,orange_20%,hotpink_60%,purple_110%] text-5xl rounded-2xl text-black dark:text-white" />
+                         <FaMobileScreenButton className="bg-linear-[25deg,orange_20%,hotpink_60%,purple_110%] text-5xl rounded-2xl text-black dark:text-white" />
                          <span className="self-center text-3xl text-heading font-semibold whitespace-nowrap">
-                              Social.Com
+                              JunoSocial
                          </span>
                     </a>
                     <button

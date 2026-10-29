@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
 import { fileURLToPath } from "node:url";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 // this will handle requests from react ^, we are loading the webserver framework, this is what runs our backend
 
 import connectDB from "./config/db.js";
@@ -15,17 +17,75 @@ import cors from "cors";
 
 dotenv.config({ path: fileURLToPath(new URL("./.env", import.meta.url)) });
 
+const isProduction = process.env.NODE_ENV === "production";
+const allowedOrigins = (
+    process.env.FRONTEND_ORIGIN ??
+    (isProduction
+        ? ""
+        : "http://localhost:5173,http://127.0.0.1:5173")
+)
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+if (isProduction && allowedOrigins.length === 0) {
+    throw new Error("Set FRONTEND_ORIGIN to your deployed frontend origin.");
+}
+
 const app = express();
 // officially creats an express application^ this is an object, it manages HTTP middleware, this object IS the webserver
 // ^ all backend logic runs through this
   app.get("/health", (req, res) => res.send("ok"));
-app.use(cors());
+app.disable("x-powered-by");
+app.use(
+    helmet({
+        strictTransportSecurity: isProduction ? undefined : false,
+    }),
+);
+app.use(
+    cors({
+        origin(origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            return callback(null, false);
+        },
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        optionsSuccessStatus: 204,
+    }),
+);
 // app.use(cors()); is Express middleware that enables CORS (Cross‑Origin Resource Sharing).
 
 //^^ In simple terms: it allows your backend API to accept requests from a different domain or port.
 // app.use(cors({ optionsSuccessStatus: 200 }));
-app.use(express.json());
+app.use(express.json({ limit: "32kb" }));
 // import signUpRoutes from "./routes/signUpRoutes.js";
+
+app.use(
+    rateLimit({
+        windowMs: 15 * 60 * 1000,
+        limit: 300,
+        standardHeaders: "draft-8",
+        legacyHeaders: false,
+    }),
+);
+
+const authRateLimit = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    skipSuccessfulRequests: true,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: {
+        success: false,
+        message: "Too many unsuccessful attempts. Please try again later.",
+    },
+});
+
+app.use("/loggingIn", authRateLimit);
+app.use("/signUp", authRateLimit);
+
 app.use("/", userRoutes);
 
 app.use("/posts", postRoutes);
