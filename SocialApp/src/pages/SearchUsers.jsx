@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { CardEl } from "../components/CardEl";
-import { FollowBtns } from "../components/FollowBtns";
+import { FollowBTNs } from "../components/FollowBTNs";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { apiUrl } from "../config/api";
 export const SearchUsers = () => {
@@ -151,7 +151,7 @@ export const SearchUsers = () => {
                             </span>
 
                             {!thisIsMe ? (
-                                <FollowBtns
+                                <FollowBTNs
                                     followLogic={() => handleFollow(user)}
                                     followingThisPerson={amFollowing}
                                     thePerson={user}
