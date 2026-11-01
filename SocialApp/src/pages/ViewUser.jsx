@@ -25,10 +25,10 @@ export const ViewUser = () => {
         }
     };
     useEffect(() => {
-        setThisId(location.state.userViewed || location.state.user);
+        setThisId(location.state?.userViewed || location.state?.user);
     }, []);
     useEffect(() => {
-        getThisUsersPosts(thisId);
+        if (thisId) getThisUsersPosts(thisId);
     }, [thisId]);
     console.log(theUser);
     console.log(thisUsersPosts);

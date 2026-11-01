@@ -96,6 +96,7 @@
 
 .navbarThemeToggle:hover {
     background: rgb(214 41 118 / 10%);
+    transform: rotate(12deg) scale(1.05);
 }
 
 .notificationControl {
@@ -116,12 +117,14 @@
     color: #575054;
     font-size: 1.15rem;
     cursor: pointer;
+    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
 }
 
 .notificationBell:hover,
 .notificationBell:focus-visible {
     background: rgb(214 41 118 / 10%);
     outline: none;
+    transform: translateY(-1px) scale(1.06);
 }
 
 .dark .notificationBell {
@@ -144,6 +147,7 @@
     font-size: 0.62rem;
     font-weight: 750;
     line-height: 1;
+    animation: notification-pop 420ms cubic-bezier(0.2, 0.9, 0.25, 1.35) both;
 }
 
 .dark .notificationBadge {
@@ -163,6 +167,8 @@
     background: #fff;
     box-shadow: 0 16px 42px rgb(25 20 22 / 18%);
     color: #262126;
+    transform-origin: top right;
+    animation: panel-arrive 180ms ease-out both;
 }
 
 .dark .notificationPanel {
@@ -202,6 +208,41 @@
     font-size: 0.78rem;
     font-weight: 650;
     cursor: pointer;
+    transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.notificationHeader button:hover {
+    opacity: 0.78;
+    transform: translateY(-1px);
+}
+
+.notificationHeaderActions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.notificationHeader .notificationSoundToggle {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 50%;
+    color: #777078;
+    font-size: 0.9rem;
+}
+
+.notificationHeader .notificationSoundToggle:hover {
+    background: rgb(214 41 118 / 10%);
+    color: #b32669;
+}
+
+.dark .notificationHeader .notificationSoundToggle {
+    color: #c4b8be;
+}
+
+.dark .notificationHeader .notificationSoundToggle:hover {
+    color: #ffb6d2;
 }
 
 .dark .notificationHeader button {
@@ -234,6 +275,12 @@
     gap: 0.65rem;
     padding: 0.7rem 0.55rem;
     border-radius: 0.7rem;
+    animation: notification-row-arrive 220ms ease-out both;
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.notificationItem:hover {
+    transform: translateX(2px);
 }
 
 .notificationItem.isUnread {
@@ -253,6 +300,11 @@
     background: #f5edf1;
     color: #9c245b;
     font-size: 0.9rem;
+    transition: transform 180ms ease;
+}
+
+.notificationItem:hover .notificationTypeIcon {
+    transform: scale(1.08);
 }
 
 .notificationTypeIcon.like {
@@ -322,6 +374,141 @@
     height: 0.45rem;
     border-radius: 50%;
     background: #e1306c;
+    animation: unread-breathe 2.2s ease-in-out infinite;
+}
+
+.avatarMenuButton {
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.avatarMenuButton:hover,
+.avatarMenuButton[aria-expanded="true"] {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 3px rgb(214 41 118 / 18%);
+}
+
+#userDropdown:not(.hidden) {
+    transform-origin: top right;
+    animation: panel-arrive 180ms ease-out both;
+}
+
+#navbar-user:not(.hidden) {
+    animation: menu-arrive 190ms ease-out both;
+}
+
+.navbarEl a,
+.navbarEl .navbarBrand {
+    transition: color 160ms ease, opacity 160ms ease, transform 160ms ease;
+}
+
+.navbarEl a:hover,
+.navbarBrand:hover {
+    opacity: 0.88;
+}
+
+.navbarEl #navbar-user a,
+.navbarEl #navbar-user button {
+    transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.navbarEl #navbar-user a:active,
+.navbarEl #navbar-user button:active {
+    transform: scale(0.98);
+}
+
+.postCard {
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.postCard:hover {
+    transform: translateY(-2px);
+    border-color: #e5c4d2;
+    box-shadow: 0 8px 24px rgb(25 20 22 / 8%);
+}
+
+.dark .postCard:hover {
+    border-color: #654252;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 22%);
+}
+
+.likeBox {
+    transition: transform 160ms ease, color 160ms ease;
+}
+
+.likeBox:hover {
+    transform: scale(1.12);
+    color: #e1306c;
+}
+
+.profileStats button,
+.profileEmpty button,
+.authCard button[type="submit"],
+.mobileBottomNav button {
+    transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+}
+
+.profileStats button:active,
+.profileEmpty button:active,
+.authCard button[type="submit"]:active,
+.mobileBottomNav button:active {
+    transform: scale(0.97);
+}
+
+@keyframes panel-arrive {
+    from {
+        opacity: 0;
+        transform: translateY(-5px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes menu-arrive {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes notification-pop {
+    0% {
+        opacity: 0;
+        transform: scale(0.45);
+    }
+    70% {
+        transform: scale(1.15);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes notification-row-arrive {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes unread-breathe {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgb(225 48 108 / 0%);
+    }
+    50% {
+        box-shadow: 0 0 0 4px rgb(225 48 108 / 13%);
+    }
 }
 
 .navbarEl #navbar-user:not(.hidden) {
@@ -1190,5 +1377,14 @@
          scroll-behavior: auto !important;
          transition-duration: 0.01ms !important;
          animation-duration: 0.01ms !important;
+     }
+
+     .notificationBadge,
+     .notificationUnreadDot,
+     .notificationPanel,
+     .notificationItem,
+     #userDropdown:not(.hidden),
+     #navbar-user:not(.hidden) {
+         animation: none !important;
      }
  }

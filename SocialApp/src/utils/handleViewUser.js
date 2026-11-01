@@ -1,4 +1,7 @@
 export const handleViewUser = (user, handleNav) => {
-    localStorage.setItem("userViewed", JSON.stringify(user));
-    handleNav("/ViewUser", { state: { userViewed: user } });
+    const userId = typeof user === "string" ? user : user?._id;
+    if (!userId) return;
+
+    localStorage.setItem("userViewed", JSON.stringify(userId));
+    handleNav("/ViewUser", { state: { userViewed: userId } });
 };

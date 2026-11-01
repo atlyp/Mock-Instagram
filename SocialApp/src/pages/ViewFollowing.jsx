@@ -9,23 +9,31 @@ export const ViewFollowing = () => {
     const navigate = useNavigate();
     console.log(location);
     const [whoIFollow, setWhoIFollow] = useState([]);
-    const getWhoIFollow = async (whoIFollow) => {
-        whoIFollow = whoIFollow?.split(" ").join("-");
-        try {
-            const resp = await fetch(
-                apiUrl(`/getMyFollowersOrWhoFollowsMe/${whoIFollow}`),
-            );
-            const data = await resp.json();
-            console.log(data);
-            setWhoIFollow(data.result);
-        } catch (error) {
-            console.log("there was an error getting your followers");
-        }
-    };
-    const personViewed = location.state.user;
+    const personViewed = location.state?.user;
     useEffect(() => {
-        getWhoIFollow(personViewed.following.list);
-    }, []);
+        let isActive = true;
+        const loadFollowing = async () => {
+            const followingIds = personViewed?.following?.list
+                ?.split(" ")
+                .join("-");
+            if (!followingIds) return;
+
+            try {
+                const resp = await fetch(
+                    apiUrl(`/getMyFollowersOrWhoFollowsMe/${followingIds}`),
+                );
+                if (!resp.ok) throw new Error("Could not load following list.");
+                const data = await resp.json();
+                if (isActive) setWhoIFollow(data.result ?? []);
+            } catch (error) {
+                console.error("There was an error getting your following list", error);
+            }
+        };
+        void loadFollowing();
+        return () => {
+            isActive = false;
+        };
+    }, [personViewed?.following?.list]);
 
     return (
         <div className=" dark:text-white p-3 ">
@@ -39,10 +47,11 @@ export const ViewFollowing = () => {
                 {whoIFollow?.map((user) => {
                     return (
                         <CardEl
+                            key={user._id}
                             pointer={true}
                             styles={"m-3 w-min shadow-3xl"}
                             handleClick={() =>
-                                handleViewUser(user._id, navigate)
+                                handleViewUser(user, navigate)
                             }
                             // we pass the Id because in this function that is what we use to navigate and fetch the user- we fetch by the ID or the user themselves
                             title={user.username}

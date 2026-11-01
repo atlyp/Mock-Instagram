@@ -7,10 +7,20 @@ import { useNavigate } from "react-router";
 import { FaMoon, FaSun } from "react-icons/fa6";
 import { setDarkMode } from "../redux/social";
 
-export const NavbarEl = ({ whatJustGotClicked }) => {
+export const NavbarEl = () => {
      const [dropdown, setDropdown] = useState(false);
+     const [avatarDropdown, setAvatarDropdown] = useState(false);
      const handleDropdown = () => {
-          setDropdown(!dropdown);
+          setDropdown((isOpen) => !isOpen);
+          setAvatarDropdown(false);
+     };
+     const handleAvatarToggle = () => {
+          setAvatarDropdown((isOpen) => !isOpen);
+          setDropdown(false);
+     };
+     const closeMenus = () => {
+          setDropdown(false);
+          setAvatarDropdown(false);
      };
      const { loggedIn, userLoggedInCurrently, darkMode } = useSelector((state) => state.socialKey);
      // console.log(userLoggedInCurrently);
@@ -33,7 +43,7 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                                           state: { user: userLoggedInCurrently },
                                      })
                                    : navigate("/");
-                              handleDropdown();
+                              closeMenus();
                          }}
                          className="navbarBrand flex items-center space-x-3 rtl:space-x-reverse"
                     >
@@ -59,7 +69,13 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                          {loggedIn && userLoggedInCurrently?._id && (
                               <NotificationBell userId={userLoggedInCurrently._id} />
                          )}
-                         {userLoggedInCurrently ? <Avatar whatTheUserJustCliked={whatJustGotClicked} /> : ""}
+                         {loggedIn && userLoggedInCurrently?._id ? (
+                              <Avatar
+                                   isOpen={avatarDropdown}
+                                   onToggle={handleAvatarToggle}
+                                   onClose={closeMenus}
+                              />
+                         ) : ""}
                          {/* <!-- Dropdown menu --> */}
 
                          <button
@@ -105,7 +121,7 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                                                          },
                                                     })
                                                   : navigate("/");
-                                             handleDropdown();
+                                             closeMenus();
                                         }}
                                         href="#"
                                         className="block py-2 px-3 text-white bg-brand rounded md:bg-transparent md:text-fg-brand md:p-0"
@@ -119,7 +135,7 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                                         onClick={() => {
                                              loggedIn ? navigate("/About", {}) : navigate("/LearnMore");
 
-                                             handleDropdown();
+                                             closeMenus();
                                         }}
                                         href="#"
                                         className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
@@ -138,7 +154,7 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                                                                  user: userLoggedInCurrently,
                                                             },
                                                        });
-                                                       handleDropdown();
+                                                       closeMenus();
                                                   }}
                                                   className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent cursor-pointer"
                                              >
@@ -155,7 +171,7 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                                                                    },
                                                               })
                                                             : navigate("/");
-                                                       handleDropdown();
+                                                       closeMenus();
                                                   }}
                                                   className="cursor-pointer block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
                                              >
