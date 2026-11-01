@@ -98,6 +98,232 @@
     background: rgb(214 41 118 / 10%);
 }
 
+.notificationControl {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.notificationBell {
+    position: relative;
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: #575054;
+    font-size: 1.15rem;
+    cursor: pointer;
+}
+
+.notificationBell:hover,
+.notificationBell:focus-visible {
+    background: rgb(214 41 118 / 10%);
+    outline: none;
+}
+
+.dark .notificationBell {
+    color: #eee7eb;
+}
+
+.notificationBadge {
+    position: absolute;
+    top: 0.05rem;
+    right: -0.05rem;
+    display: grid;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    place-items: center;
+    padding: 0 0.2rem;
+    border: 2px solid #fff;
+    border-radius: 9999px;
+    background: #e1306c;
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 750;
+    line-height: 1;
+}
+
+.dark .notificationBadge {
+    border-color: #171315;
+}
+
+.notificationPanel {
+    position: absolute;
+    top: calc(100% + 0.65rem);
+    right: -3.5rem;
+    z-index: 50;
+    width: min(22rem, calc(100vw - 1.25rem));
+    max-height: min(70vh, 32rem);
+    overflow-y: auto;
+    border: 1px solid #e8e4e6;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 16px 42px rgb(25 20 22 / 18%);
+    color: #262126;
+}
+
+.dark .notificationPanel {
+    border-color: #3a3035;
+    background: #171315;
+    color: #f5f2f3;
+}
+
+.notificationHeader {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #f0ebed;
+    background: inherit;
+}
+
+.dark .notificationHeader {
+    border-color: #30282c;
+}
+
+.notificationHeader h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 750;
+}
+
+.notificationHeader button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #b32669;
+    font-size: 0.78rem;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.dark .notificationHeader button {
+    color: #ffb6d2;
+}
+
+.notificationMessage {
+    margin: 0;
+    padding: 1.1rem 1rem;
+    color: #777078;
+    font-size: 0.85rem;
+    line-height: 1.55;
+}
+
+.dark .notificationMessage {
+    color: #bdb3b8;
+}
+
+.notificationList {
+    display: grid;
+    margin: 0;
+    padding: 0.35rem;
+    list-style: none;
+}
+
+.notificationItem {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr) 0.5rem;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.7rem 0.55rem;
+    border-radius: 0.7rem;
+}
+
+.notificationItem.isUnread {
+    background: #fff4f8;
+}
+
+.dark .notificationItem.isUnread {
+    background: #2a1b23;
+}
+
+.notificationTypeIcon {
+    display: grid;
+    width: 2.2rem;
+    height: 2.2rem;
+    place-items: center;
+    border-radius: 50%;
+    background: #f5edf1;
+    color: #9c245b;
+    font-size: 0.9rem;
+}
+
+.notificationTypeIcon.like {
+    background: #fff0f2;
+    color: #e1306c;
+}
+
+.notificationTypeIcon.unfollow {
+    background: #f0edf5;
+    color: #72518a;
+}
+
+.dark .notificationTypeIcon {
+    background: #38252f;
+    color: #ffb6d2;
+}
+
+.dark .notificationTypeIcon.like {
+    background: #40202b;
+    color: #ff829f;
+}
+
+.dark .notificationTypeIcon.unfollow {
+    background: #2c2635;
+    color: #c7a8e1;
+}
+
+.notificationText {
+    display: grid;
+    min-width: 0;
+    gap: 0.25rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #514a4f;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    text-align: left;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.notificationText strong {
+    color: #282328;
+    font-weight: 700;
+}
+
+.notificationText time {
+    color: #928890;
+    font-size: 0.7rem;
+}
+
+.dark .notificationText {
+    color: #d3cbd0;
+}
+
+.dark .notificationText strong {
+    color: #fff;
+}
+
+.dark .notificationText time {
+    color: #aa9da4;
+}
+
+.notificationUnreadDot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: #e1306c;
+}
+
 .navbarEl #navbar-user:not(.hidden) {
     padding: 0 1rem 0.75rem;
 }

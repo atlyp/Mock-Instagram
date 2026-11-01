@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Avatar } from "./Avatar";
+import { NotificationBell } from "./NotificationBell";
 import { useDispatch, useSelector } from "react-redux";
 import { FaMobileScreenButton } from "react-icons/fa6";
 import { useNavigate } from "react-router";
@@ -55,6 +56,9 @@ export const NavbarEl = ({ whatJustGotClicked }) => {
                          )}
                     </button>
                     <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                         {loggedIn && userLoggedInCurrently?._id && (
+                              <NotificationBell userId={userLoggedInCurrently._id} />
+                         )}
                          {userLoggedInCurrently ? <Avatar whatTheUserJustCliked={whatJustGotClicked} /> : ""}
                          {/* <!-- Dropdown menu --> */}
 

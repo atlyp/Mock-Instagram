@@ -9,6 +9,7 @@ import connectDB from "./config/db.js";
 // ^ imports the database connection function, the server will call it on startup, this connects mongoDB to the backend
 
 import postRoutes from "./routes/postRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 import userRoutes from "./routes/userRoutes.js";
 
@@ -95,6 +96,7 @@ app.use("/signUp", authRateLimit);
 app.use("/", userRoutes);
 
 app.use("/posts", postRoutes);
+app.use("/notifications", notificationRoutes);
 
 // app.get("/api/:whatever", (req, res) => {
 //   const whatYouSaid = req.params.whatever;

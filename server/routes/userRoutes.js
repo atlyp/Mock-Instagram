@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 // Use bcrypt to hash new passwords and verify login attempts.
 
 import User from "../models/User.js";
+import Notification from "../models/Notification.js";
 // Load the MongoDB user model so these routes can read and save accounts.
 // grabbing the user model- this is how we  enable data base queries- how our routes acces our user data- this connect our API to mongoDB
 const router = express.Router();
@@ -457,6 +458,16 @@ router.put("/followSomeone/:myId/:theirId", async (req, res) => {
   // console.log("this is the request params", req.params);
 
   try {
+    const currentMe = await User.findById(myId);
+    if (!currentMe) {
+      return res.status(404).json({
+        success: false,
+        message: "Your account could not be found.",
+      });
+    }
+    const wasFollowing = String(currentMe.following?.list ?? "")
+      .split(/\s+/)
+      .includes(theirId);
     // This starts work that can fail, such as a database or bcrypt operation.
     const newMe = await User.findByIdAndUpdate(
       // Update the current account's follow list in MongoDB.
@@ -490,6 +501,14 @@ router.put("/followSomeone/:myId/:theirId", async (req, res) => {
     // Persist the updated current account.
     await newThem.save();
     // Persist the updated other account.
+    if (!wasFollowing && myId !== theirId) {
+      await Notification.create({
+        recipientId: theirId,
+        actorId: myId,
+        actorUsername: currentMe.username || "Someone",
+        type: "follow",
+      });
+    }
     res.json({
       // Send the route result as JSON so the frontend can read it.
       success: true,
@@ -523,6 +542,16 @@ router.put("/unFollowSomeone/:myId/:theirId", async (req, res) => {
   const updatedLists = req.body;
   // Read the updated follow information sent by the frontend.
   try {
+    const currentMe = await User.findById(myId);
+    if (!currentMe) {
+      return res.status(404).json({
+        success: false,
+        message: "Your account could not be found.",
+      });
+    }
+    const wasFollowing = String(currentMe.following?.list ?? "")
+      .split(/\s+/)
+      .includes(theirId);
     // This starts work that can fail, such as a database or bcrypt operation.
     const newMe = await User.findByIdAndUpdate(
       // Update the current account's follow list in MongoDB.
@@ -556,6 +585,14 @@ router.put("/unFollowSomeone/:myId/:theirId", async (req, res) => {
     // Persist the updated current account.
     await newThem.save();
     // Persist the updated other account.
+    if (wasFollowing && myId !== theirId) {
+      await Notification.create({
+        recipientId: theirId,
+        actorId: myId,
+        actorUsername: currentMe.username || "Someone",
+        type: "unfollow",
+      });
+    }
     console.log(updatedLists);
     // Print this development information to the server console.
     res.status(202).json({

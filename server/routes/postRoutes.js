@@ -4,6 +4,7 @@ const router = express.Router();
 import Post from "../models/Post.js";
 // we need to grab the post model- so we can access the mongoDB collection
 import User from "../models/User.js";
+import Notification from "../models/Notification.js";
 
 import jsonPosts from "../../SocialApp/src/assets/posts.json" with { type: "json" };
 
@@ -90,6 +91,16 @@ router.put("/likeAPost/:postsId/:myId", async (req, res) => {
     const updatedLikes = req.body;
     console.log(req.body);
     try {
+        const postBeforeLike = await Post.findById(postsId);
+        if (!postBeforeLike) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found.",
+            });
+        }
+        const alreadyLiked = String(postBeforeLike.likes?.list ?? "").includes(
+            myId,
+        );
         const postAfterWeLikedIt = await Post.findByIdAndUpdate(
             postsId,
             {
@@ -98,6 +109,19 @@ router.put("/likeAPost/:postsId/:myId", async (req, res) => {
             { returnDocument: "after" },
         );
         await postAfterWeLikedIt.save();
+        if (!alreadyLiked && postBeforeLike.userId !== myId) {
+            const actor = await User.findById(myId);
+            if (actor) {
+                await Notification.create({
+                    recipientId: postBeforeLike.userId,
+                    actorId: myId,
+                    actorUsername: actor.username || "Someone",
+                    type: "like",
+                    postId: postsId,
+                    postTitle: postBeforeLike.title || "",
+                });
+            }
+        }
         console.log(postAfterWeLikedIt.likes);
         res.status(203).json({
             success: true,
