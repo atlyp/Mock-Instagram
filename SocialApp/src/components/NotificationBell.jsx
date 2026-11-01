@@ -25,9 +25,8 @@ const NotificationIcon = ({ type }) => {
     return <FaUserPlus aria-hidden="true" />;
 };
 
-export const NotificationBell = ({ userId }) => {
+export const NotificationBell = ({ userId, isOpen, onToggle }) => {
     const [notifications, setNotifications] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [soundEnabled, setSoundEnabled] = useState(
         () => localStorage.getItem("notificationSound") !== "off",
@@ -174,7 +173,7 @@ export const NotificationBell = ({ userId }) => {
     const handleBellClick = () => {
         getAudioContext();
         const opening = !isOpen;
-        setIsOpen(opening);
+        onToggle();
         if (opening && unreadCount > 0) {
             void markAllAsRead();
         }

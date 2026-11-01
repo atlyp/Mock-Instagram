@@ -10,17 +10,26 @@ import { setDarkMode } from "../redux/social";
 export const NavbarEl = () => {
      const [dropdown, setDropdown] = useState(false);
      const [avatarDropdown, setAvatarDropdown] = useState(false);
+     const [notificationsOpen, setNotificationsOpen] = useState(false);
      const handleDropdown = () => {
           setDropdown((isOpen) => !isOpen);
           setAvatarDropdown(false);
+          setNotificationsOpen(false);
      };
      const handleAvatarToggle = () => {
           setAvatarDropdown((isOpen) => !isOpen);
           setDropdown(false);
+          setNotificationsOpen(false);
+     };
+     const handleNotificationsToggle = () => {
+          setNotificationsOpen((isOpen) => !isOpen);
+          setDropdown(false);
+          setAvatarDropdown(false);
      };
      const closeMenus = () => {
           setDropdown(false);
           setAvatarDropdown(false);
+          setNotificationsOpen(false);
      };
      const { loggedIn, userLoggedInCurrently, darkMode } = useSelector((state) => state.socialKey);
      // console.log(userLoggedInCurrently);
@@ -67,7 +76,11 @@ export const NavbarEl = () => {
                     </button>
                     <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                          {loggedIn && userLoggedInCurrently?._id && (
-                              <NotificationBell userId={userLoggedInCurrently._id} />
+                              <NotificationBell
+                                   userId={userLoggedInCurrently._id}
+                                   isOpen={notificationsOpen}
+                                   onToggle={handleNotificationsToggle}
+                              />
                          )}
                          {loggedIn && userLoggedInCurrently?._id ? (
                               <Avatar
@@ -182,14 +195,6 @@ export const NavbarEl = () => {
                               ) : (
                                    ""
                               )}
-                              <li>
-                                   <a
-                                        href="#"
-                                        className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
-                                   >
-                                        Contact
-                                   </a>
-                              </li>
                          </ul>
                     </div>
                </div>

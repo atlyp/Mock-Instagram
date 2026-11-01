@@ -155,9 +155,9 @@
 }
 
 .notificationPanel {
-    position: absolute;
-    top: calc(100% + 0.65rem);
-    right: -3.5rem;
+    position: fixed;
+    top: 4.9rem;
+    right: max(0.625rem, calc((100vw - 72rem) / 2));
     z-index: 50;
     width: min(22rem, calc(100vw - 1.25rem));
     max-height: min(70vh, 32rem);
@@ -385,6 +385,18 @@
 .avatarMenuButton[aria-expanded="true"] {
     transform: scale(1.06);
     box-shadow: 0 0 0 3px rgb(214 41 118 / 18%);
+}
+
+.avatarControl {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#userDropdown {
+    top: calc(100% + 0.65rem);
+    right: 0;
+    width: min(13rem, calc(100vw - 1.25rem));
 }
 
 #userDropdown:not(.hidden) {

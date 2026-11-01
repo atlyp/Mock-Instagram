@@ -16,12 +16,11 @@ export const Avatar = ({ isOpen, onToggle, onClose }) => {
     };
 
     return (
-        <>
-            {userLoggedInCurrently.username !== undefined ? (
-                <>
+        userLoggedInCurrently.username !== undefined ? (
+                <div className="avatarControl">
                     <button
                         type="button"
-                        className="avatarMenuButton relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-neutral-tertiary rounded-full"
+                        className="avatarMenuButton inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-neutral-tertiary rounded-full"
                         onClick={onToggle}
                         aria-label="Open account menu"
                         aria-expanded={isOpen}
@@ -43,7 +42,7 @@ export const Avatar = ({ isOpen, onToggle, onClose }) => {
                     </button>
                     <div
                         id="userDropdown"
-                        className={`z-30 absolute ${isOpen ? "" : "hidden"} bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-52 top-13 right-0`}
+                        className={`z-30 absolute ${isOpen ? "" : "hidden"} bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg`}
                     >
                         <div className="px-4 py-3 border-b border-default-medium text-sm text-heading">
                             <button
@@ -101,10 +100,7 @@ export const Avatar = ({ isOpen, onToggle, onClose }) => {
                             </li>
                         </ul>
                     </div>
-                </>
-            ) : (
-                ""
-            )}
-        </>
+                </div>
+        ) : null
     );
 };
