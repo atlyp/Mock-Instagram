@@ -709,6 +709,135 @@
     line-height: 1.5;
 }
 
+.postLikesLink {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    padding: 0.15rem 0.35rem;
+    border: 0;
+    border-radius: 0.45rem;
+    background: transparent;
+    color: #71676d;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 160ms ease, background-color 160ms ease;
+}
+
+.postLikesLink:hover:not(:disabled) {
+    background: rgb(214 41 118 / 8%);
+    color: #b32669;
+}
+
+.postLikesLink:disabled {
+    cursor: default;
+}
+
+.dark .postLikesLink {
+    color: #c4b8be;
+}
+
+.dark .postLikesLink:hover:not(:disabled) {
+    background: rgb(214 41 118 / 14%);
+    color: #ffb6d2;
+}
+
+.postLikers {
+    margin-top: 0.6rem;
+    padding: 0.8rem;
+    border: 1px solid #eee8eb;
+    border-radius: 0.8rem;
+    background: #fffafd;
+}
+
+.dark .postLikers {
+    border-color: #3a3035;
+    background: #211b1e;
+}
+
+.postLikers h3 {
+    margin: 0 0 0.55rem;
+    color: #332c31;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.dark .postLikers h3 {
+    color: #f5f2f3;
+}
+
+.postLikers p {
+    margin: 0.4rem 0;
+    color: #777078;
+    font-size: 0.82rem;
+}
+
+.dark .postLikers p {
+    color: #bdb3b8;
+}
+
+.postLikers ul {
+    display: grid;
+    gap: 0.25rem;
+    max-height: 12rem;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.postLikers li button {
+    display: flex;
+    width: 100%;
+    min-height: 2.5rem;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.3rem;
+    border: 0;
+    border-radius: 0.55rem;
+    background: transparent;
+    color: #342d32;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.postLikers li button:hover {
+    background: #f8edf2;
+    color: #a12660;
+}
+
+.dark .postLikers li button {
+    color: #eee7eb;
+}
+
+.dark .postLikers li button:hover {
+    background: #38252f;
+    color: #ffb6d2;
+}
+
+.postLikerAvatar {
+    width: 1.8rem;
+    height: 1.8rem;
+    flex: none;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.postLikerInitial {
+    display: grid;
+    place-items: center;
+    background: #f3e8ef;
+    color: #9c245b;
+    font-size: 0.78rem;
+}
+
+.dark .postLikerInitial {
+    background: #38252f;
+    color: #ffb6d2;
+}
+
 .authSection {
     min-height: calc(100vh - 5.5rem);
 }

@@ -36,6 +36,44 @@ router.get("/getAllPosts", async (req, res) => {
     res.send({ posts: allPosts });
 });
 
+router.get("/getPostLikes/:postId", async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.postId).select("likes");
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found.",
+            });
+        }
+
+        const likerIds = [
+            ...new Set(
+                String(post.likes?.list ?? "").match(/[a-f\d]{24}/gi) ?? [],
+            ),
+        ];
+        const likers = await User.find(
+            { _id: { $in: likerIds } },
+            "username email image",
+        );
+        const usersById = new Map(
+            likers.map((user) => [String(user._id), user]),
+        );
+
+        res.json({
+            success: true,
+            likers: likerIds
+                .map((id) => usersById.get(id))
+                .filter(Boolean),
+        });
+    } catch (error) {
+        console.error("There was an error getting post likes", error);
+        res.status(500).json({
+            success: false,
+            message: "There was an error getting the people who liked this post.",
+        });
+    }
+});
+
 router.post("/createAPost/:id", async (req, res) => {
     const { id } = req.params;
     const postCreated = req.body;

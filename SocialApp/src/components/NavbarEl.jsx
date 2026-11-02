@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar } from "./Avatar";
 import { NotificationBell } from "./NotificationBell";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +31,28 @@ export const NavbarEl = () => {
           setAvatarDropdown(false);
           setNotificationsOpen(false);
      };
+     useEffect(() => {
+          const closeDropdownsOnOutsideClick = (event) => {
+               if (!(event.target instanceof Element)) return;
+               if (
+                    event.target.closest(
+                         ".notificationControl, .avatarControl, #navbar-user, .navbarMenuToggle",
+                    )
+               ) {
+                    return;
+               }
+               setDropdown(false);
+               setAvatarDropdown(false);
+               setNotificationsOpen(false);
+          };
+
+          document.addEventListener("pointerdown", closeDropdownsOnOutsideClick);
+          return () =>
+               document.removeEventListener(
+                    "pointerdown",
+                    closeDropdownsOnOutsideClick,
+               );
+     }, []);
      const { loggedIn, userLoggedInCurrently, darkMode } = useSelector((state) => state.socialKey);
      // console.log(userLoggedInCurrently);
      const dispatch = useDispatch();
@@ -95,7 +117,7 @@ export const NavbarEl = () => {
                               onClick={handleDropdown}
                               data-collapse-toggle="navbar-user"
                               type="button"
-                              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
+                              className="navbarMenuToggle inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
                               aria-controls="navbar-user"
                               aria-expanded={dropdown}
                               aria-label={dropdown ? "Close navigation menu" : "Open navigation menu"}
