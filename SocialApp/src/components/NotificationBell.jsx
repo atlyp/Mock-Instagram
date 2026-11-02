@@ -7,7 +7,9 @@ import {
     FaVolumeHigh,
     FaVolumeXmark,
 } from "react-icons/fa6";
+import { useNavigate } from "react-router";
 import { apiUrl } from "../config/api";
+import { handleViewUser } from "../utils/handleViewUser";
 
 const notificationCopy = (notification) => {
     if (notification.type === "like") {
@@ -26,6 +28,7 @@ const NotificationIcon = ({ type }) => {
 };
 
 export const NotificationBell = ({ userId, isOpen, onToggle }) => {
+    const navigate = useNavigate();
     const [notifications, setNotifications] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [soundEnabled, setSoundEnabled] = useState(
@@ -188,6 +191,12 @@ export const NotificationBell = ({ userId, isOpen, onToggle }) => {
         });
     };
 
+    const handleNotificationClick = async (notification) => {
+        await markAsRead(notification._id);
+        onToggle();
+        handleViewUser(notification.actorId, navigate);
+    };
+
     return (
         <div className="notificationControl">
             <button
@@ -267,7 +276,9 @@ export const NotificationBell = ({ userId, isOpen, onToggle }) => {
                                 <button
                                     type="button"
                                     className="notificationText"
-                                    onClick={() => markAsRead(notification._id)}
+                                    onClick={() =>
+                                        handleNotificationClick(notification)
+                                    }
                                     aria-label={`${notification.actorUsername} ${notificationCopy(notification)}`}
                                 >
                                     <span>
